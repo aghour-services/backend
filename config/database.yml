@@ -1,0 +1,24 @@
+default: &default
+  adapter: postgresql
+  encoding: utf8
+  schema_search_path: public
+  username: <%= ENV.fetch('POSTGRES_USER') %>
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
+  host: <%= ENV.fetch('POSTGRES_HOST', '127.0.0.1') %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 20 } %>
+
+development:
+  <<: *default
+  database: <%= ENV['POSTGRES_DB'] %>
+
+test:
+  <<: *default
+  database: <%= ENV['POSTGRES_DB'] %>
+
+staging:
+  <<: *default
+  database: <%= ENV.fetch('POSTGRES_DB') %>
+
+production:
+  <<: *default
+  database: <%= ENV['POSTGRES_DB'] %>

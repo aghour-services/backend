@@ -1,4 +1,5 @@
 json.array! @firms do |firm|
+  json.id firm.id
   json.name firm.name
   json.description firm.description
   json.address firm.address

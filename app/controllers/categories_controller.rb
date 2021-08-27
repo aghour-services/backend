@@ -1,7 +1,10 @@
 class CategoriesController < ActionController::Base
   before_action :fetch_category, only: %I[show edit update]
 
-  def index; end
+  def index
+    @categories = Category.all
+    render json: { data: @categories }
+  end
 
   def new
     @category = Category.new

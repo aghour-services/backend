@@ -1,12 +1,9 @@
 Rails.application.routes.draw do
   defaults format: :html do
     resources :categories do
-      member do
-        # Firm::TYPES.each do |type|
-          resources "firms", controller: 'firms'
-        # end
-      end
+      resources :firms, controller: :firms, only: %I[edit update create new]
     end
+    resources :firms, controller: :firms, only: %I[index]
   end
 
   defaults format: :json do

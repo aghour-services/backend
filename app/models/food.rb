@@ -1,3 +1,2 @@
 class Food < Firm
-    
 end

@@ -1,12 +1,1 @@
-
-<h2> Category: <%= @category.name %> </h2>
-<%= form_for(@firm) do |form| %>
-  <%= form.text_field :name, placeholder: 'Name' %>
-  <%= form.text_area :description, placeholder: 'Description' %>
-  <%= form.text_field :phone_number, placeholder: 'Phone' %>
-  <%= form.text_field :address, placeholder: 'Address' %>
-  <%= form.text_field :fb_page, placeholder: "Facebook" %>
-  <%= form.text_field :email, placeholder: 'Email' %>
-
-  <%= form.submit %>
-<% end %>
+<%= render 'form' %>

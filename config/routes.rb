@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     resources :categories do
       member do
         # Firm::TYPES.each do |type|
-          resources "firms", controller: 'firms'
+        resources "firms", controller: 'firms'
         # end
       end
     end

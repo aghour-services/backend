@@ -1,9 +1,11 @@
 <h2> Category </h2>
+
 <%= form_for(@category) do |form| %>
-  <%= form.text_field :name %>
-  <%= form.text_area :description %>
-
-  <%= form.file_field :icon %>
-
-  <%= form.submit %>
+  <div class="form-group">
+    <div class="form-row">
+      <div class="col-6"> <%= form.text_field :name,  class: 'form-control', placeholder: 'Name' %> </div>
+      <div class="col-2"> <%= form.file_field :icon %> </div>
+      <div class="col-2"> <%= form.submit class: 'btn btn-primary' %> </div>
+    </div>
+  </div>
 <% end %>

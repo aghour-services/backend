@@ -7,7 +7,6 @@ class CreateFirms < ActiveRecord::Migration[6.1]
       t.string :phone_number
       t.string :email
       t.string :fb_page
-      # t.string :type, null: false
 
       t.references :category
       t.timestamps

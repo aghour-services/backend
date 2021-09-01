@@ -1,9 +1,8 @@
-class CategoriesController < ActionController::Base
+class CategoriesController < HtmlController
   before_action :fetch_category, only: %I[show edit update]
 
   def index
     @categories = Category.all
-    render json: { data: @categories }
   end
 
   def new
@@ -25,7 +24,7 @@ class CategoriesController < ActionController::Base
   private
 
   def category_params
-    params.require(:category).permit(:name, :description, :icon)
+    params.require(:category).permit(:name, :icon)
   end
 
   def fetch_category

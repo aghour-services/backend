@@ -1,0 +1,30 @@
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Category</th>
+      <th scope="col">Address</th>
+      <th scope="col">Description</th>
+      <th scope="col">Email</th>
+      <th scope="col">Facebook Page</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @firms.each do |firm| %>
+      <% category = firm.category %>
+      <tr>
+        <td><%= firm.id %> </td>
+        <td><%= firm.name %></td>
+        <td><%= firm.category.name %></td>
+        <td><%= firm.address %></td>
+        <td><%= firm.description %></td>
+        <td><%= firm.email %></td>
+        <td><%= firm.fb_page %></td>
+
+        <td> <%= link_to "Edit", edit_category_firm_path(category, firm) %> </td>
+      </tr>
+    </tbody>
+  <% end %>
+</table>

@@ -1,10 +1,10 @@
-class FirmsController < ActionController::Base
+class FirmsController < HtmlController
   before_action :fetch_category, except: %I[index]
   before_action :fetch_firm, only: %I[show update edit]
 
   def index
-    @firms = Firm.all
-    render json: { data: @firms }
+    @firms = Firm.all.includes(:category)
+    @firms = @firms.where(category_id: params[:category_id]) if params[:category_id]
   end
 
   def new
@@ -19,14 +19,18 @@ class FirmsController < ActionController::Base
   end
 
   def create
-    firm = Firm.create(firm_params.merge(category_id: @category.id))
-    render json: { data: firm }
+    @firm = Firm.new(firm_params.merge(category_id: @category.id))
+    if @firm.save
+      redirect_to edit_category_firm_path(@category, @firm)
+    else
+      render 'new'
+    end
   end
 
   private
 
   def firm_params
-    params.require(:firm).permit(:name, :description, :address, :phone_number)
+    params.require(:firm).permit(:name, :description, :address, :phone_number, :fb_page, :email)
   end
 
   def fetch_category

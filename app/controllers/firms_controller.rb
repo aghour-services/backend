@@ -3,8 +3,8 @@ class FirmsController < HtmlController
   before_action :fetch_firm, only: %I[show update edit]
 
   def index
-    @firms = Firm.all
-    render json: { data: @firms }
+    @firms = Firm.all.includes(:category)
+    @firms = @firms.where(category_id: params[:category_id]) if params[:category_id]
   end
 
   def new

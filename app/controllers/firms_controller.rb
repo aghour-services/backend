@@ -13,6 +13,10 @@ class FirmsController < HtmlController
 
   def edit; end
 
+  def destroy 
+    render json: {data: params}
+  end
+  
   def update
     @firm.update(firm_params)
     redirect_to edit_category_firm_path(@category, @firm)

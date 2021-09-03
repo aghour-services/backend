@@ -6,8 +6,7 @@
       <th scope="col">Category</th>
       <th scope="col">Address</th>
       <th scope="col">Description</th>
-      <th scope="col">Email</th>
-      <th scope="col">Facebook Page</th>
+      <th scope="col">Phone Number</th>
       <th scope="col">Actions</th>
     </tr>
   </thead>
@@ -20,10 +19,12 @@
         <td><%= firm.category.name %></td>
         <td><%= firm.address %></td>
         <td><%= firm.description %></td>
-        <td><%= firm.email %></td>
-        <td><%= firm.fb_page %></td>
-
-        <td> <%= link_to "Edit", edit_category_firm_path(category, firm) %> </td>
+        <td><%= firm.phone_number %></td>
+        <td>
+          <%= link_to edit_category_firm_path(category, firm), method: :get do %>
+            <i class="fas fa-edit"></i>
+          <% end %>
+        </td>
       </tr>
     </tbody>
   <% end %>

@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   defaults format: :html do
     resources :categories do
-      resources :firms, controller: :firms, only: %I[edit update create new]
+      resources :firms, controller: :firms
     end
     resources :firms, controller: :firms, only: %I[index]
   end

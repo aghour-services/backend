@@ -2,7 +2,7 @@ class Api::FirmsController < ApplicationController
   before_action :fetch_category
 
   def index
-    @firms = @category.firms.all
+    @firms = @category.firms.order(:id)
   end
 
   private

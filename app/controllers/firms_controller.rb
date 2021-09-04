@@ -3,7 +3,7 @@ class FirmsController < HtmlController
   before_action :fetch_firm, only: %I[show update edit]
 
   def index
-    @firms = Firm.all.includes(:category)
+    @firms = Firm.all.order(:id).includes(:category)
     @firms = @firms.where(category_id: params[:category_id]) if params[:category_id]
   end
 
@@ -16,7 +16,7 @@ class FirmsController < HtmlController
   def destroy 
     render json: {data: params}
   end
-  
+
   def update
     @firm.update(firm_params)
     redirect_to edit_category_firm_path(@category, @firm)

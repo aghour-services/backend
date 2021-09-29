@@ -15,6 +15,7 @@ gem 'bootsnap', '>= 1.4.4'
 
 gem 'activestorage-cloudinary-service'
 gem 'cloudinary'
+gem 'newrelic_rpm'
 
 group :development, :test do
   gem 'byebug', platforms: %I[mri mingw x64_mingw]

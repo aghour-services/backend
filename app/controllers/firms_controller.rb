@@ -1,6 +1,6 @@
 class FirmsController < HtmlController
   before_action :fetch_category, except: %I[index]
-  before_action :fetch_firm, only: %I[show update edit]
+  before_action :fetch_firm, only: %I[show update edit destroy]
 
   def index
     @firms = Firm.all.order(:id).includes(:category)
@@ -14,7 +14,8 @@ class FirmsController < HtmlController
   def edit; end
 
   def destroy 
-    render json: {data: params}
+    @firm.destroy
+    redirect_to firms_path
   end
 
   def update

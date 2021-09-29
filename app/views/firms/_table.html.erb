@@ -21,9 +21,13 @@
         <td><%= firm.description %></td>
         <td><%= firm.phone_number %></td>
         <td>
-          <%= link_to edit_category_firm_path(category, firm), method: :get do %>
-            <i class="fas fa-edit"></i>
-          <% end %>
+          <div>
+            <%= link_to edit_category_firm_path(category, firm), method: :get do %>
+              <i class="fas fa-edit"></i>
+            <% end %>
+
+            <%= button_to 'X', category_firm_path(category, firm), class: "btn-small btn-danger", method: :delete %>
+          </div>
         </td>
       </tr>
     </tbody>

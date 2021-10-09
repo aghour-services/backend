@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   defaults format: :json do
     namespace :api do
+      resources :search, only: %I[index]
       resources :firms
       resources :categories
     end

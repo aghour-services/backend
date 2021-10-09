@@ -1,2 +1,0 @@
-class Doctor < Firm
-end

@@ -1,3 +1,3 @@
 class HtmlController < ActionController::Base
-    layout 'application'
+  layout 'application'
 end

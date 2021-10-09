@@ -13,7 +13,7 @@ class FirmsController < HtmlController
 
   def edit; end
 
-  def destroy 
+  def destroy
     @firm.destroy
     redirect_to firms_path
   end

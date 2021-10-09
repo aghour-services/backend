@@ -19,11 +19,20 @@ gem 'newrelic_rpm'
 
 group :development, :test do
   gem 'byebug', platforms: %I[mri mingw x64_mingw]
+  gem 'factory_bot_rails', '~> 6.1.0'
+  gem 'faker', '~> 2.15.1'
+  gem 'rails-controller-testing', '~> 1.0.5'
+  gem 'rspec-rails', '~> 4.0.1'
+  gem 'rubocop', '~> 1.19'
+  gem 'shoulda-matchers', '~> 4.4.1'
 end
 
 group :development do
   gem 'listen', '~> 3.3'
   gem 'spring'
 end
-
+group :test do
+  gem 'database_cleaner-active_record'
+  gem 'simplecov', require: false
+end
 gem 'tzinfo-data', platforms: %I[mingw mswin x64_mingw jruby]

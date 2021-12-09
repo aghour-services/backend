@@ -7,7 +7,11 @@ Rails.application.routes.draw do
   end
 
   defaults format: :json do
-    namespace :api do
+    scope :api do
+      devise_for :users, controllers: {
+        sessions: 'api/users/sessions',
+        registrations: 'api/users/registrations'
+      }
       resources :search, only: %I[index]
       resources :firms
       resources :categories

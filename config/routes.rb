@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   defaults format: :html do
+    resources :users
     resources :categories do
       resources :firms, controller: :firms
     end

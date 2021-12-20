@@ -4,7 +4,7 @@ Rails.application.routes.draw do
     resources :categories do
       resources :firms, controller: :firms
     end
-    resources :firms, controller: :firms, only: %I[index]
+    resources :firms, controller: :firms, only: %I[index create]
   end
 
   defaults format: :json do

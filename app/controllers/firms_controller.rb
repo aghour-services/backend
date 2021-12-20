@@ -24,7 +24,7 @@ class FirmsController < HtmlController
   end
 
   def create
-    @firm = Firm.new(firm_params.merge(category_id: @category.id))
+    @firm = Firm.new(firm_params.merge(category_id: @category.id, staus: :published))
     if @firm.save
       redirect_to edit_category_firm_path(@category, @firm)
     else

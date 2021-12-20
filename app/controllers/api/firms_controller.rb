@@ -1,13 +1,27 @@
 class Api::FirmsController < ApplicationController
   before_action :fetch_category
+  before_action :authenticate_user!
 
   def index
-    @firms = @category.firms.includes(:category).order(:id)
+    @firms = @category.firms.published.includes(:category).order(:id)
+  end
+
+  def create
+    @firm = Firm.new(firm_params.merge(category_id: @category.id, user: current_user))
+    if @firm.save
+      render :create, status: :created
+    else
+      render :errors, status: :unprocessable_entity
+    end
   end
 
   private
 
+  def firm_params
+    params.require(:firm).permit(:name, :description, :address, :phone_number, :fb_page, :email)
+  end
+
   def fetch_category
-    @category = Category.find params[:category_id]
+    @category = Category.find params[:firm][:category_id]
   end
 end

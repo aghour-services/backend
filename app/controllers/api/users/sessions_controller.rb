@@ -7,6 +7,6 @@ class Api::Users::SessionsController < Devise::SessionsController
     current_user.generate_token
     current_user.save
     current_user.reload
-    render json: { current_user: current_user }, status: 200
+    render json: current_user, status: 200
   end
 end

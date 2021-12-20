@@ -1,6 +1,6 @@
 class Api::FirmsController < ApplicationController
-  before_action :fetch_category
-  before_action :authenticate_user!
+  before_action :fetch_category, only: [:create]
+  before_action :authenticate_user!, only: [:create]
 
   def index
     @firms = @category.firms.published.includes(:category).order(:id)

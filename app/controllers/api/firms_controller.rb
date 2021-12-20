@@ -1,5 +1,5 @@
 class Api::FirmsController < ApplicationController
-  before_action :fetch_category, only: [:create]
+  before_action :fetch_category, only: [:index]
   before_action :authenticate_user!, only: [:create]
 
   def index
@@ -7,7 +7,7 @@ class Api::FirmsController < ApplicationController
   end
 
   def create
-    @firm = Firm.new(firm_params.merge(category_id: @category.id, user: current_user))
+    @firm = Firm.new(firm_params.merge(user: current_user))
     if @firm.save
       render :create, status: :created
     else
@@ -18,10 +18,10 @@ class Api::FirmsController < ApplicationController
   private
 
   def firm_params
-    params.require(:firm).permit(:name, :description, :address, :phone_number, :fb_page, :email)
+    params.require(:firm).permit(:name, :category_id, :description, :address, :phone_number, :fb_page, :email)
   end
 
   def fetch_category
-    @category = Category.find params[:firm][:category_id]
+    @category = Category.find params[:category_id]
   end
 end

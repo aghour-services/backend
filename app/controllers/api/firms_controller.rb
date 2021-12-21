@@ -1,4 +1,4 @@
-class Api::FirmsController < ApplicationController
+class Api::FirmsController < ApiController
   before_action :fetch_category, only: [:index]
   before_action :authenticate_user!, only: [:create]
 

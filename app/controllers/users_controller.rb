@@ -2,7 +2,7 @@ class UsersController < HtmlController
   before_action :fetch_user, only: %I[destroy]
 
   def index
-    @users = User.all
+    @users = User.all.order(id: :desc)
   end
 
   def destroy

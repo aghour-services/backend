@@ -20,7 +20,7 @@ class FirmsController < HtmlController
 
   def update
     @firm.update(firm_params)
-    redirect_to edit_category_firm_path(@category, @firm)
+    redirect_to edit_category_firm_path(@firm.category, @firm)
   end
 
   def create
@@ -35,7 +35,7 @@ class FirmsController < HtmlController
   private
 
   def firm_params
-    params.require(:firm).permit(:name, :description, :address, :phone_number, :fb_page, :email)
+    params.require(:firm).permit(:name, :description, :address, :phone_number, :fb_page, :email, :category_id, :status)
   end
 
   def fetch_category
@@ -43,6 +43,6 @@ class FirmsController < HtmlController
   end
 
   def fetch_firm
-    @firm = @category.firms.find_by!(id: params[:id])
+    @firm = Firm.find(params[:id])
   end
 end

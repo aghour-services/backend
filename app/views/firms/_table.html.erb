@@ -7,6 +7,7 @@
       <th scope="col">Address</th>
       <th scope="col">Description</th>
       <th scope="col">Phone Number</th>
+      <th scope="col">Status</th>
       <th scope="col">Actions</th>
     </tr>
   </thead>
@@ -20,6 +21,7 @@
         <td><%= firm.address %></td>
         <td><%= firm.description %></td>
         <td><%= firm.phone_number %></td>
+        <td> <%= status(firm.status) %> </td>
         <td>
           <div>
             <%= link_to edit_category_firm_path(category, firm), method: :get do %>

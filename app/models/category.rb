@@ -6,6 +6,8 @@ class Category < ApplicationRecord
   has_many :firms
 
   def icon_path
+    return '' if icon.nil?
+
     icon.attachment.try(:blob).try(:url)
   end
 end

@@ -8,4 +8,8 @@ class Firm < ApplicationRecord
   include PgSearch::Model
   pg_search_scope :search, against: %i[name description],
                            using: { tsearch: { any_word: true, prefix: true, dictionary: 'arabic' } }
+
+  def dispaly_user
+    "#{user.try(:id)} - #{user.try(:name)}"
+  end
 end

@@ -8,6 +8,7 @@
       <th scope="col">Description</th>
       <th scope="col">Phone Number</th>
       <th scope="col">Status</th>
+      <th scope="col">User</th>
       <th scope="col">Actions</th>
     </tr>
   </thead>
@@ -22,14 +23,10 @@
         <td><%= firm.description %></td>
         <td><%= firm.phone_number %></td>
         <td> <%= status(firm.status) %> </td>
+        <td> <%= firm.dispaly_user %> </td>
         <td>
-          <div>
-            <%= link_to edit_category_firm_path(category, firm), method: :get do %>
-              <i class="fas fa-edit"></i>
-            <% end %>
-
-            <%= button_to 'X', category_firm_path(category, firm), class: "btn-small btn-danger", method: :delete %>
-          </div>
+          <%= button_to 'Edit', edit_category_firm_path(category, firm), class: "btn btn-outline-success", method: :get, data: {confirm: "Are you sure?"} %>
+          <%= button_to 'Destroy', category_firm_path(category, firm), class: "btn btn-outline-danger", method: :delete, data: {confirm: "Are you sure?"} %>
         </td>
       </tr>
     </tbody>

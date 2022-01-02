@@ -8,7 +8,7 @@ gem 'rails', '~> 6.1.4'
 gem 'pg', '~> 1.1'
 gem 'pg_search'
 
-gem 'puma', '~> 5.0'
+gem 'puma', '~> 5.5'
 
 gem 'jbuilder', '~> 2.7'
 

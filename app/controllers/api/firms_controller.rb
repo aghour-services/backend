@@ -3,7 +3,7 @@ class Api::FirmsController < ApiController
   before_action :authenticate_user!, only: [:create]
 
   def index
-    @firms = @category.firms.published.includes(:category).order('RANDOM()')
+    @firms = @category.firms.published.includes(:category).order("RANDOM()")
   end
 
   def create

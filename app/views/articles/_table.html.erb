@@ -1,0 +1,20 @@
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @articles.each do |article| %>
+      <tr>
+        <td><%= article.description %></td>
+        <td> <%= status(article.status) %> </td>
+        <td>
+          <%= button_to 'Edit', edit_article_path(article), class: "btn btn-outline-success", method: :get, data: {conarticle: "Are you sure?"} %>
+          <%= button_to 'Destroy', article_path(article), class: "btn btn-outline-danger", method: :delete, data: {conarticle: "Are you sure?"} %>
+        </td>
+      </tr>
+    </tbody>
+  <% end %>
+</table>

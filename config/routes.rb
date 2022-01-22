@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       resources :firms, controller: :firms
     end
     resources :firms, controller: :firms, only: %I[index create]
+    resources :articles, controller: :articles
   end
 
   defaults format: :json do

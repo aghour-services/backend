@@ -5,10 +5,12 @@ Rails.application.routes.draw do
       resources :firms, controller: :firms
     end
     resources :firms, controller: :firms, only: %I[index create]
+    resources :articles, controller: :articles
   end
 
   defaults format: :json do
     namespace :api do
+      resources :articles, only: %I[index]
       resources :search, only: %I[index]
       resources :firms
       resources :categories

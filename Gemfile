@@ -19,6 +19,7 @@ gem 'cloudinary'
 gem 'newrelic_rpm'
 
 gem 'devise', '~> 4.8'
+gem 'fcm'
 
 group :development, :test do
   gem 'byebug', platforms: %I[mri mingw x64_mingw]

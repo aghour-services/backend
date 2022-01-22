@@ -1,0 +1,8 @@
+<% if @article.errors.messages.present? %>
+  <div class="alert alert-primary" role="alert">
+    A simple primary alert—check it out!
+  </div>
+<% end %>
+<div class="container-fluid">
+  <%= render 'form' %>
+</div>

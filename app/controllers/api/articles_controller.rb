@@ -1,5 +1,5 @@
 class Api::ArticlesController < ApplicationController
   def index
-    @articles = Article.published.last(50)
+    @articles = Article.last(50)
   end
 end

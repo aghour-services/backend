@@ -18,7 +18,7 @@ class ArticlesController < HtmlController
 
   def update
     @article.update(article_params)
-    redirect_to edit_category_article_path(@article.category, @article)
+    redirect_to edit_article_path(@article)
   end
 
   def create
@@ -33,7 +33,7 @@ class ArticlesController < HtmlController
   private
 
   def article_params
-    params.require(:article).permit(:description)
+    params.require(:article).permit(:description, :status)
   end
 
   def fetch_article

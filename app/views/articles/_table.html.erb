@@ -3,11 +3,14 @@
     <tr>
       <th scope="col">#</th>
       <th scope="col">Description</th>
+      <th scope="col">Status</th>
+      <th scope="col">Actions</th>
     </tr>
   </thead>
   <tbody>
     <% @articles.each do |article| %>
       <tr>
+        <td><%= article.id %></td>
         <td><%= article.description %></td>
         <td> <%= status(article.status) %> </td>
         <td>

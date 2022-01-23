@@ -1,5 +1,6 @@
 class NotificationService
-  def self.send
+  def self.send(article_id)
+    article = Article.find article_id
     fcm = FCM.new(
       "AIzaSyDuqo8CAeue4IVAdhGwJtdofArV_mzxdV4",
       "aghour-app-firebase.json",
@@ -17,8 +18,8 @@ class NotificationService
         }.to_json
       },
       'notification': {
-        title: "Test",
-        body: "Test",
+        title: "خبر جديد في أجهور",
+        body: article.description.first(1000),
       },
       'android': {},
       'apns': {

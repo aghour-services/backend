@@ -2,7 +2,7 @@ class ArticlesController < HtmlController
   before_action :fetch_article, only: %I[show update edit destroy]
 
   def index
-    @articles = Article.last(300)
+    @articles = Article.order(:desc).last(300)
   end
 
   def new

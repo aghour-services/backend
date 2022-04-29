@@ -18,7 +18,7 @@ class NotificationService
         }.to_json
       },
       'notification': {
-        title: "خبر جديد في أجهور",
+        title: "أخبار أجهور الكبرى",
         body: article.description.first(1000),
       },
       'android': {},

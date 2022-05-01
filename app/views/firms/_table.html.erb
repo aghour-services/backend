@@ -25,7 +25,7 @@
         <td> <%= status(firm.status) %> </td>
         <td> <%= firm.dispaly_user %> </td>
         <td>
-          <%= button_to 'Edit', edit_category_firm_path(category, firm), class: "btn btn-outline-success", method: :get, data: {confirm: "Are you sure?"} %>
+          <%= button_to 'Edit', edit_category_firm_path(category, firm), class: "btn btn-outline-success", method: :get %>
           <%= button_to 'Destroy', category_firm_path(category, firm), class: "btn btn-outline-danger", method: :delete, data: {confirm: "Are you sure?"} %>
         </td>
       </tr>

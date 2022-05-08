@@ -17,6 +17,8 @@ class Article < ApplicationRecord
   end
 
   def send_notification
+    return unless published?
+
     NotificationService.send(id)
   end
 end

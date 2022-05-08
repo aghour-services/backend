@@ -2,6 +2,16 @@ RSpec.fdescribe 'Api::Articles', type: :request do
   context '#create' do
     let(:user) { create(:user) }
     let(:article) { build(:article) }
+
+    context 'When invalid user' do
+      it 'creates draft article' do
+        headers = { TOKEN: Faker::Name.name }
+        expect do
+          post '/api/articles', params: { article: { description: article.description } }, headers: headers
+        end.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
     context 'When default user' do
       it 'creates draft article' do
         headers = { TOKEN: user.token }

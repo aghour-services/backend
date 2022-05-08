@@ -1,8 +1,8 @@
 RSpec.fdescribe 'Api::Articles', type: :request do
   context '#create' do
+    let(:user) { create(:user) }
+    let(:article) { build(:article) }
     context 'When default user' do
-      let(:user) { create(:user) }
-      let(:article) { build(:article) }
       it 'creates draft article' do
         headers = { TOKEN: user.token }
         expect do
@@ -14,7 +14,6 @@ RSpec.fdescribe 'Api::Articles', type: :request do
 
     context 'When publisher user' do
       let(:user) { create(:user, :publisher) }
-      let(:article) { build(:article) }
       it 'creates published article' do
         headers = { TOKEN: user.token }
         expect do
@@ -26,7 +25,6 @@ RSpec.fdescribe 'Api::Articles', type: :request do
 
     context 'creates published articles' do
       let(:user) { create(:user, :admin) }
-      let(:article) { build(:article) }
       it 'creates published articles' do
         headers = { TOKEN: user.token }
         expect do

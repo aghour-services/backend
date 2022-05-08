@@ -18,10 +18,6 @@ module Api
 
     private
 
-    def user_ability
-      @user_ability = UserAbility.new(current_user)
-    end
-
     def article_params
       params.require(:article).permit(:description)
     end

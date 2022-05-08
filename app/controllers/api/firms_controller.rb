@@ -4,6 +4,7 @@ module Api
   class FirmsController < ApiController
     before_action :fetch_category, only: [:index]
     before_action :authenticate_user!, only: [:create]
+    before_action :user_ability, only: [:create]
 
     def index
       @firms = @category.firms.published.includes(:category).order('RANDOM()')
@@ -11,6 +12,8 @@ module Api
 
     def create
       @firm = Firm.new(firm_params.merge(user: current_user))
+      @firm.status = :published if user_ability.can_publish?
+
       if @firm.save
         render :create, status: :created
       else

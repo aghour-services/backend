@@ -1,27 +1,31 @@
-class Api::FirmsController < ApiController
-  before_action :fetch_category, only: [:index]
-  before_action :authenticate_user!, only: [:create]
+# frozen_string_literal: true
 
-  def index
-    @firms = @category.firms.published.includes(:category).order("RANDOM()")
-  end
+module Api
+  class FirmsController < ApiController
+    before_action :fetch_category, only: [:index]
+    before_action :authenticate_user!, only: [:create]
 
-  def create
-    @firm = Firm.new(firm_params.merge(user: current_user))
-    if @firm.save
-      render :create, status: :created
-    else
-      render :errors, status: :unprocessable_entity
+    def index
+      @firms = @category.firms.published.includes(:category).order('RANDOM()')
     end
-  end
 
-  private
+    def create
+      @firm = Firm.new(firm_params.merge(user: current_user))
+      if @firm.save
+        render :create, status: :created
+      else
+        render :errors, status: :unprocessable_entity
+      end
+    end
 
-  def firm_params
-    params.require(:firm).permit(:name, :category_id, :description, :address, :phone_number, :fb_page, :email)
-  end
+    private
 
-  def fetch_category
-    @category = Category.find params[:category_id]
+    def firm_params
+      params.require(:firm).permit(:name, :category_id, :description, :address, :phone_number, :fb_page, :email)
+    end
+
+    def fetch_category
+      @category = Category.find params[:category_id]
+    end
   end
 end

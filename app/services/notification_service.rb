@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class NotificationService
   def self.send(article_id)
     article = Article.find article_id
     fcm = FCM.new(
-      "AIzaSyDuqo8CAeue4IVAdhGwJtdofArV_mzxdV4",
-      "aghour-app-firebase.json",
-      "aghour-app"
+      'AIzaSyDuqo8CAeue4IVAdhGwJtdofArV_mzxdV4',
+      'aghour-app-firebase.json',
+      'aghour-app'
     )
 
     message = {
@@ -18,15 +20,15 @@ class NotificationService
         }.to_json
       },
       'notification': {
-        title: "أخبار أجهور الكبرى",
-        body: article.description.first(1000),
+        title: 'أخبار أجهور الكبرى',
+        body: article.description.first(1000)
       },
       'android': {},
       'apns': {
         payload: {
           aps: {
-            sound: "default",
-            category: "#{Time.zone.now.to_i}"
+            sound: 'default',
+            category: Time.zone.now.to_i.to_s
           }
         }
       },

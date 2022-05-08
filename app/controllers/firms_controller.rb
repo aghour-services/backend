@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FirmsController < HtmlController
   before_action :fetch_category, except: %I[index]
   before_action :fetch_firm, only: %I[show update edit destroy]

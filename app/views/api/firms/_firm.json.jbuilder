@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 json.id firm.id
 json.name firm.name
 json.description firm.description

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class CreatePgSearchDocuments < ActiveRecord::Migration[6.1]
   def up
-    say_with_time("Creating table for pg_search multisearch") do
+    say_with_time('Creating table for pg_search multisearch') do
       create_table :pg_search_documents do |t|
         t.text :content
         t.belongs_to :searchable, polymorphic: true, index: true
@@ -10,7 +12,7 @@ class CreatePgSearchDocuments < ActiveRecord::Migration[6.1]
   end
 
   def down
-    say_with_time("Dropping table for pg_search multisearch") do
+    say_with_time('Dropping table for pg_search multisearch') do
       drop_table :pg_search_documents
     end
   end

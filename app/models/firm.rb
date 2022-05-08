@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Firm < ApplicationRecord
   validates :name, :phone_number, :address, presence: true
 

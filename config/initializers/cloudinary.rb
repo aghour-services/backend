@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Cloudinary.config do |config|
   config.cloud_name = 'aghour-services'
   config.api_key = '776616651239775'

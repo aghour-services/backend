@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   defaults format: :html do
     root to: 'pages#main'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CategoriesController < HtmlController
   before_action :fetch_category, only: %I[show edit update]
 

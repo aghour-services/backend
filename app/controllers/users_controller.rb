@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+# rubocop:disable Style/Documentation
+
 class UsersController < HtmlController
   before_action :fetch_user, only: %I[edit update destroy]
 
@@ -5,14 +9,13 @@ class UsersController < HtmlController
     @users = User.all.order(id: :desc)
   end
 
-  def edit
-  end
+  def edit; end
 
   def destroy
     @user.destroy
     redirect_to users_path
   end
-  
+
   def update
     @user.update(user_params)
     redirect_to edit_user_path(@user)

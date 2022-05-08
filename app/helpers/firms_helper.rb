@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module FirmsHelper
   def status(status)
     label_color = \

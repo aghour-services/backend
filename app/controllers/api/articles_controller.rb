@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Api
-  class ArticlesController < ApplicationController
+  class ArticlesController < ApiController
     before_action :authenticate_user!, only: [:create]
     before_action :user_ability, only: [:create]
 
@@ -11,8 +11,9 @@ module Api
 
     def create
       @article = Article.new(article_params.merge(user: current_user))
-      @article.status = :draft if user_ability.can_publish?
-      redirect_to edit_article_path(@article) if @article.save
+      @article.status = :published if user_ability.can_publish?
+
+      render :create, status: :created if @article.save
     end
 
     private
@@ -22,7 +23,7 @@ module Api
     end
 
     def article_params
-      params.require(:article).permit(:description, :status)
+      params.require(:article).permit(:description)
     end
   end
 end

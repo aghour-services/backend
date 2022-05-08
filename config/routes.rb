@@ -15,7 +15,7 @@ Rails.application.routes.draw do
 
   defaults format: :json do
     namespace :api do
-      resources :articles, only: %I[index]
+      resources :articles, only: %I[index create]
       resources :search, only: %I[index]
       resources :firms
       resources :categories

@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class NotificationService
-  def self.send(article_id)
+  def self.send(_article_id)
+    return unless Rails.env == 'production'
+
     article = Article.find article_id
     fcm = FCM.new(
       'AIzaSyDuqo8CAeue4IVAdhGwJtdofArV_mzxdV4',

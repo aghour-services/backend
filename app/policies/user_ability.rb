@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 class UserAbility
-  def new(user)
+  def initialize(user)
     @user = user
   end
 
   def can_publish?
-    @user.role = :publisher || @user.admin?
+    @user.publisher? || @user.admin?
   end
 end

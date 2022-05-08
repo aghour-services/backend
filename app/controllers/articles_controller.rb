@@ -24,7 +24,7 @@ class ArticlesController < HtmlController
   end
 
   def create
-    @article = Article.new(article_params)
+    @article = Article.new(article_params.merge(status: :published))
     if @article.save
       redirect_to edit_article_path(@article)
     else

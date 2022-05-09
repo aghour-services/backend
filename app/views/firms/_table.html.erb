@@ -23,7 +23,7 @@
         <td><%= firm.description %></td>
         <td><%= firm.phone_number %></td>
         <td> <%= status(firm.status) %> </td>
-        <td> <%= firm.dispaly_user %> </td>
+        <td> <%= firm.user&.dispaly %> </td>
         <td>
           <%= button_to 'Edit', edit_category_firm_path(category, firm), class: "btn btn-outline-success", method: :get %>
           <%= button_to 'Destroy', category_firm_path(category, firm), class: "btn btn-outline-danger", method: :delete, data: {confirm: "Are you sure?"} %>

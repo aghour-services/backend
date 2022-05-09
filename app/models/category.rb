@@ -11,5 +11,7 @@ class Category < ApplicationRecord
     return '' if icon.nil?
 
     icon.attachment.try(:blob).try(:url)
+  rescue StandardError => e
+    ''
   end
 end

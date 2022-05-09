@@ -15,4 +15,8 @@ class User < ApplicationRecord
   def generate_token
     self.token = "#{id}/#{SecureRandom.urlsafe_base64(nil, false)}"
   end
+
+  def dispaly
+    "#{id} - #{name}"
+  end
 end

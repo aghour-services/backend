@@ -6,5 +6,7 @@ FactoryBot.define do
     description { Faker::Lorem.paragraph }
     phone_number { Faker::PhoneNumber.phone_number }
     address { Faker::Address.full_address }
+    category { Category.last }
+    user { create(:user) }
   end
 end

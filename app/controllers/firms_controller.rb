@@ -5,7 +5,7 @@ class FirmsController < HtmlController
   before_action :fetch_firm, only: %I[show update edit destroy]
 
   def index
-    @firms = Firm.includes(:category).order(id: :desc).limit(300)
+    @firms = Firm.includes(:category, :user).order(id: :desc).limit(300)
     @firms = @firms.where(category_id: params[:category_id]) if params[:category_id]
   end
 

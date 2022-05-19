@@ -23,6 +23,8 @@ gem 'newrelic_rpm'
 gem 'devise', '~> 4.8'
 gem 'fcm'
 
+gem 'redis', '~> 4.2.5'
+
 group :development, :test do
   gem 'byebug', platforms: %I[mri mingw x64_mingw]
   gem 'factory_bot_rails', '~> 6.1.0'

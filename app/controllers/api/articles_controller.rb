@@ -2,10 +2,19 @@
 
 module Api
   class ArticlesController < ApiController
+    CACHE_KEY = 'articles#index'
+
     before_action :authenticate_user!, only: [:create]
     before_action :user_ability, only: [:create]
 
+    after_action :cache_response, only: [:index]
+    before_action :check_cached, only: [:index]
+
     def index
+      if @cached_response
+        render json: @cached_response
+        return
+      end
       @articles = Article.published.order(id: :desc).first(50)
     end
 
@@ -20,6 +29,14 @@ module Api
 
     def article_params
       params.require(:article).permit(:description)
+    end
+
+    def check_cached
+      @cached_response = REDIS_CLIENT.get CACHE_KEY
+    end
+
+    def cache_response
+      REDIS_CLIENT.setex CACHE_KEY, 3.hours, response.body
     end
   end
 end

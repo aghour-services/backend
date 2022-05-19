@@ -12,6 +12,11 @@ services:
       - postgres:/var/lib/postgresql
     ports:
       - "5432:5432"
+  redis:
+    image: redis:6.0
+    restart: always
+    ports:
+      - "6379:6379"
 
 volumes:
   postgres:

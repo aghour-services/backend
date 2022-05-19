@@ -5,12 +5,13 @@ require 'action_view/helpers'
 
 class Article < ApplicationRecord
   include ActionView::Helpers::DateHelper
+  CACHE_KEY = 'articles#index'
 
   validates :description, presence: true
   belongs_to :user, optional: true
 
   enum status: { draft: 0, published: 1 }, _default: :draft
-  after_create :send_notification
+  after_create :send_notification, :clear_cache
 
   def time_ago
     distance_of_time_in_words_to_now(created_at.to_datetime)
@@ -20,5 +21,9 @@ class Article < ApplicationRecord
     return unless published?
 
     NotificationService.send(id)
+  end
+
+  def clear_cache
+    REDIS_CLIENT.del CACHE_KEY
   end
 end

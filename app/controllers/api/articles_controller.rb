@@ -33,10 +33,12 @@ module Api
 
     def check_cached
       @cached_response = REDIS_CLIENT.get CACHE_KEY
+    rescue StandardError => e
     end
 
     def cache_response
       REDIS_CLIENT.setex CACHE_KEY, 3.hours, response.body
+    rescue StandardError => e
     end
   end
 end

@@ -25,5 +25,6 @@ class Article < ApplicationRecord
 
   def clear_cache
     REDIS_CLIENT.del CACHE_KEY
+  rescue StandardError => e
   end
 end

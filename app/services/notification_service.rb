@@ -2,7 +2,8 @@
 
 class NotificationService
   def self.send(article_id)
-    return unless Rails.env == 'production'
+    topic = 'News'
+    topic = 'News-Staging' unless Rails.env == 'production'
 
     article = Article.find article_id
     fcm = FCM.new(
@@ -12,8 +13,8 @@ class NotificationService
     )
 
     message = {
-      'topic': 'News', # OR token if you want to send to a specific device
-      # 'token': "000iddqd",
+      'topic': topic, # OR token if you want to send to a specific device
+      # 'token': 'e-qOe8viR3eomoItWV5X-0:APA91bGnxT6GGOlDBpveMk81oimqruSeZj7g3O39RCDTQWxoUP1BecrLtw37cA-i0TsYxsQJRXU3K6nTzugPNcqsuylD6bFo9Z3Kt1ChkKUbQ4Bb3_eCPJYe7E72yXEI4F18hnaOvBMO',
       'data': {
         payload: {
           data: {

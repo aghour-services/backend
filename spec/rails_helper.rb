@@ -15,12 +15,6 @@ rescue ActiveRecord::PendingMigrationError => e
 end
 
 # ENV['PARALLEL_TESTS_CONCURRENCY'] = "1"
-if ENV['COVERAGE']
-  require 'simplecov'
-  SimpleCov.start('rails') do
-    add_group 'Services', 'app/services'
-  end
-end
 
 RSpec.configure do |config|
   config.infer_spec_type_from_file_location!

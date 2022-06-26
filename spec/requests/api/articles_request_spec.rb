@@ -1,4 +1,6 @@
-RSpec.fdescribe 'Api::Articles', type: :request do
+# frozen_string_literal: true
+
+RSpec.describe 'Api::Articles', type: :request do
   context '#create' do
     let(:user) { create(:user) }
     let(:article) { build(:article) }

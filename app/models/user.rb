@@ -8,6 +8,8 @@ class User < ApplicationRecord
 
   validates :name, presence: true
   has_many :firms
+  has_many :articles
+
   before_create :generate_token
 
   enum role: { user: 0, publisher: 1, admin: 2 }, _default: :user

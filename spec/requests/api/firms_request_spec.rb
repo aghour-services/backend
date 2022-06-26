@@ -1,4 +1,4 @@
-RSpec.fdescribe 'Api::Firms', type: :request do
+RSpec.describe 'Api::Firms', type: :request do
   context '#create' do
     let(:firm) { build(:firm) }
     let(:category) { create(:category) }

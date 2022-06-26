@@ -20,7 +20,7 @@ class Article < ApplicationRecord
   def send_notification
     return unless published?
 
-    NotificationService.send(id)
+    NotificationService.new(self).send
   end
 
   def clear_cache

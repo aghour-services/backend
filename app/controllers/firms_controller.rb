@@ -37,7 +37,8 @@ class FirmsController < HtmlController
   private
 
   def firm_params
-    params.require(:firm).permit(:name, :description, :address, :phone_number, :fb_page, :email, :category_id, :status)
+    params.require(:firm).permit(:name, :description, :tags, :address, :phone_number,
+                                 :fb_page, :email, :category_id, :status)
   end
 
   def fetch_category

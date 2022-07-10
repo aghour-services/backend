@@ -1,0 +1,1 @@
+updater: rails db:migrate

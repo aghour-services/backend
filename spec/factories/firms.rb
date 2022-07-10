@@ -8,5 +8,6 @@ FactoryBot.define do
     address { Faker::Address.full_address }
     category { Category.last }
     user { create(:user) }
+    status { :published }
   end
 end

@@ -7,7 +7,7 @@ module Api
     before_action :user_ability, only: [:create]
 
     def index
-      @firms = @category.firms.published.includes(:category).order('RANDOM()')
+      @firms = @category.firms.published.includes(:category).filter_by(params[:tags]).order('RANDOM()')
     end
 
     def create

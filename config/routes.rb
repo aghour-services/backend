@@ -18,7 +18,9 @@ Rails.application.routes.draw do
       resources :articles, only: %I[index create]
       resources :search, only: %I[index]
       resources :firms
-      resources :categories
+      resources :categories do
+        get :tags
+      end
     end
     scope :api do
       devise_for :users, controllers: {

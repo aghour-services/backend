@@ -18,7 +18,6 @@ module Api
 
     def tags
       @tags = @category.firms.where.not(tags: nil).pluck(:tags).map { |list| list.split('-') }.flatten.uniq.sort
-      render json: @tags
     end
 
     private

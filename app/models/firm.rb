@@ -7,7 +7,7 @@ class Firm < ApplicationRecord
   belongs_to :user, optional: true
   enum status: { draft: 0, published: 1 }, _default: :draft
 
-  scope :filter_by, ->(tags) { search_by_tags(tags.split(',')) unless tags.nil? }
+  scope :filter_by, ->(tags) { search_by_tags(tags.split(',')) if tags.present? }
 
   include PgSearch::Model
   pg_search_scope :search, against: %i[name description],

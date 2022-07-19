@@ -70,7 +70,7 @@ def import_firms
   end
 end
 
-import_articles
-import_categories
-import_users
-import_firms
+# import_articles
+# import_categories
+# import_users
+# import_firms

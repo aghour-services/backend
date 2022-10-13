@@ -11,7 +11,7 @@ console:
 sidekiq:
 	bundle exec sidekiq
 
-dev-bash:
+bash:
 	docker-compose exec backend bash
 
 stop:

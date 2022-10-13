@@ -19,4 +19,4 @@ staging:
   database: <%= ENV['POSTGRES_DB'] %>
 
 production:
-  url: <%= ENV['DATABASE_URL'] %>
+  database: <%= ENV['POSTGRES_DB'] %>

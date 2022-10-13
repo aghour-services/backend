@@ -10,13 +10,23 @@ services:
       test: "exit 0"
     volumes:
       - postgres:/var/lib/postgresql
-    ports:
-      - "5432:5432"
   redis:
     image: redis:6.0
     restart: always
+
+  backend: 
+    build: .
+    entrypoint: /app/entrypoint.sh
     ports:
-      - "6379:6379"
+      - "3001:3000"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - redis
+    env_file:
+      - environment.env
+    restart: always
 
 volumes:
   postgres:

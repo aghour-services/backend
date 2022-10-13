@@ -1,4 +1,4 @@
-FROM ruby:3.0.0
+FROM ruby:3.2-rc
 
 RUN apt update --fix-missing
 
@@ -11,7 +11,6 @@ ENV APP_PATH /app/
 WORKDIR $APP_PATH
 ADD . $APP_PATH
 
-RUN bundle update rails
-RUN bundle install --jobs 4
+RUN bundle install -j8
 
-CMD bash -c "rm -f tmp/pids/server.pid && rails s -p 3000 -b '0.0.0.0'"
+CMD 'bash'

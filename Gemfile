@@ -21,6 +21,9 @@ gem 'newrelic_rpm'
 gem 'devise', '~> 4.8'
 gem 'fcm'
 
+gem 'net-imap' # for rspec
+gem 'net-pop'  # for rspec
+gem 'net-smtp' # to send email
 gem 'redis', '~> 4.2.5'
 
 group :development, :test do

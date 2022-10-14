@@ -8,6 +8,7 @@ def import_articles
     article.description = entry['description']
     article.user_id = entry['user_id']
     article.created_at = entry['created_at']
+    article.status = entry['status']
     article.save(validate: false)
   end
 end

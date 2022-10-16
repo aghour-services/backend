@@ -4,8 +4,8 @@ class NotificationService
   def initialize(article)
     @article = article
 
-    @topic = "News-#{Rails.env}"
-    @topic = 'News' if Rails.env == 'production'
+    @topic = "News-v2-#{Rails.env}"
+    @topic = 'News-v2' if Rails.env == 'production'
   end
 
   def send

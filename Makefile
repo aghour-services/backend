@@ -2,7 +2,7 @@ include environment.env
 build:
 	docker-compose build
 
-dev:
+up:
 	docker-compose up
 
 console:

@@ -9,6 +9,7 @@ class User < ApplicationRecord
   validates :name, presence: true
   has_many :firms
   has_many :articles
+  has_many :commnets, dependent: :destroy
 
   before_create :generate_token
 

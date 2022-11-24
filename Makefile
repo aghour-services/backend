@@ -5,6 +5,9 @@ build:
 up:
 	docker-compose up -d
 
+restart:
+	docker-compose restart
+	
 logs:
 	docker-compose logs -f backend
 

@@ -2,4 +2,4 @@
 
 json.id comment.id
 json.body comment.body
-json.user comment.user.name
+json.partial! partial: '/api/users/user', user: comment.user

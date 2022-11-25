@@ -12,10 +12,10 @@ logs:
 	docker-compose logs -f backend
 
 console:
-	rails console
+	docker-compose exec backend rails console
 
 sidekiq:
-	bundle exec sidekiq
+	docker-compose exec sidekiq
 
 bash:
 	docker-compose exec backend bash

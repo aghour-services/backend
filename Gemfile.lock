@@ -293,6 +293,8 @@ GEM
     zeitwerk (2.5.4)
 
 PLATFORMS
+  aarch64-linux
+  arm64-darwin-21
   x86_64-linux
 
 DEPENDENCIES
@@ -325,4 +327,4 @@ DEPENDENCIES
   tzinfo-data
 
 BUNDLED WITH
-   2.4.0.dev
+   2.3.16

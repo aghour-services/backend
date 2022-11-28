@@ -1,8 +1,8 @@
 module Api
     class CommentsController < ApiController
         before_action :authenticate_user!, only: %i[create update destroy]
-        before_action :find_comment, only: %i[update destroy]
         before_action :find_article
+        before_action :find_comment, only: %i[update destroy]
 
         def index
             @comments = @article.comments
@@ -29,8 +29,10 @@ module Api
 
         def destroy
             if @comment.user == current_user
-                @comment.destroy
-                render json: { message: 'Comment deleted' }
+                if @comment.destroy
+                    head :no_content
+                end
+                
             else
                 render json: { error: 'You can only delete your own comments' }
             end
@@ -47,7 +49,7 @@ module Api
         end
 
         def find_comment
-            @comment = Comment.find(params[:id])
+            @comment = @article.comments.find(params[:id])
         end
     end
 end

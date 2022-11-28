@@ -19,7 +19,7 @@ class User < ApplicationRecord
     self.token = "#{id}/#{SecureRandom.urlsafe_base64(nil, false)}"
   end
 
-  def dispaly
+  def display
     "#{id} - #{name}"
   end
 end

@@ -14,7 +14,7 @@
         <td><%= article.id %></td>
         <td><%= article.description %></td>
         <td> <%= status(article.status) %> </td>
-        <td> <%= article.user&.dispaly %> </td>
+        <td> <%= article.user&.display %> </td>
         <td>
           <%= button_to 'Edit', edit_article_path(article), class: "btn btn-outline-success", method: :get, data: {conarticle: "Are you sure?"} %>
           <%= button_to 'Destroy', article_path(article), class: "btn btn-outline-danger", method: :delete, data: {conarticle: "Are you sure?"} %>

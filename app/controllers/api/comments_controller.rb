@@ -1,6 +1,6 @@
 module Api
     class CommentsController < ApiController
-        before_action :authenticate_user!, only: [:create]
+        before_action :authenticate_user!, only: %i[create update destroy]
         before_action :find_article
 
         def index
@@ -13,6 +13,15 @@ module Api
                 render :create, status: :created
             else
                 render json: @comment.errors
+            end
+        end
+
+        def update
+            @comment = @article.comments.find(params[:id])
+            if @comment.user == current_user
+               render update, if @comment.update(comment_params)
+            else
+                render json: { error: 'You can only edit your own comments' }
             end
         end
        

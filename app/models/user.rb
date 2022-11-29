@@ -20,6 +20,6 @@ class User < ApplicationRecord
   end
 
   def display
-    "#{id} - #{name}"
+    "#{name}"
   end
 end

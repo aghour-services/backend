@@ -4,4 +4,4 @@ json.id article.id
 json.description article.description
 json.status article.status
 json.created_at article.time_ago
-json.partial! partial: '/api/users/user', user: article.user
+json.name article.user.display

@@ -7,10 +7,6 @@ class ArticlesController < HtmlController
     @articles = Article.order(id: :desc).last(300)
   end
 
-  def new
-    @article = Article.new
-  end
-
   def edit; end
 
   def destroy
@@ -21,15 +17,6 @@ class ArticlesController < HtmlController
   def update
     @article.update(article_params)
     redirect_to edit_article_path(@article)
-  end
-
-  def create
-    @article = Article.new(article_params.merge(status: :published))
-    if @article.save
-      redirect_to edit_article_path(@article)
-    else
-      render 'new'
-    end
   end
 
   private

@@ -3,20 +3,20 @@
 Rails.application.routes.draw do
   defaults format: :html do
     root to: 'pages#main'
-    # get '/app-ads.txt', to: 'pages#main'
+    get '/app-ads.txt', to: 'pages#main'
 
     resources :users
+    resources :firms, only: %I[index create]
+    resources :articles, only: %I[index update edit]
     resources :categories do
-      resources :firms, controller: :firms
+      resources :firms
     end
-    resources :firms, controller: :firms, only: %I[index create]
-    resources :articles, controller: :articles
   end
 
   defaults format: :json do
     namespace :api do
       resources :articles, only: %I[index create] do
-        resources :comments, only: %I[index create update destroy] 
+        resources :comments, only: %I[index create update destroy]
       end
       resources :search, only: %I[index]
       resources :firms

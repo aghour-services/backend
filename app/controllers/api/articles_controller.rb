@@ -11,10 +11,10 @@ module Api
     before_action :check_cached, only: [:index]
 
     def index
-      # if @cached_response
-      #   render json: @cached_response
-      #   return
-      # end
+      if @cached_response
+        render json: @cached_response
+        return
+      end
       @articles = Article.includes(:user, :comments).published.order(id: :desc).first(50)
     end
 

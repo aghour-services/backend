@@ -3,7 +3,7 @@
 Rails.application.routes.draw do
   defaults format: :html do
     root to: 'pages#main'
-    get '/app-ads.txt', to: 'pages#main'
+    # get '/app-ads.txt', to: 'pages#main'
 
     resources :users
     resources :firms, only: %I[index create]

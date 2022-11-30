@@ -2,4 +2,8 @@
 
 json.id comment.id
 json.body comment.body
-json.partial! partial: '/api/users/user', user: comment.user
+json.created_at comment.time_ago
+
+json.user do
+  json.partial! partial: '/api/users/user', user: comment.user
+end

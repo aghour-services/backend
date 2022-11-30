@@ -2,9 +2,6 @@
 
 Rails.application.routes.draw do
   defaults format: :html do
-    root to: 'pages#main'
-    # get '/app-ads.txt', to: 'pages#main'
-
     resources :users
     resources :firms, only: %I[index create]
     resources :articles, only: %I[index update edit]
@@ -15,6 +12,11 @@ Rails.application.routes.draw do
 
   defaults format: :json do
     namespace :api do
+      resources :users do
+        collection do
+          get :profile
+        end
+      end
       resources :articles, only: %I[index create] do
         resources :comments, only: %I[index create update destroy]
       end

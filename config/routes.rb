@@ -15,8 +15,9 @@ Rails.application.routes.draw do
 
   defaults format: :json do
     namespace :api do
+      resources :devices
       resources :articles, only: %I[index create] do
-        resources :comments, only: %I[index create update destroy] 
+        resources :comments, only: %I[index create update destroy]
       end
       resources :search, only: %I[index]
       resources :firms

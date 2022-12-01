@@ -8,7 +8,7 @@ class Article < ApplicationRecord
   CACHE_KEY = 'articles#index'
 
   validates :description, presence: true
-  belongs_to :user, optional: true
+  belongs_to :user
   has_many :comments, dependent: :destroy
 
   enum status: { draft: 0, published: 1 }, _default: :draft

@@ -12,11 +12,10 @@ Rails.application.routes.draw do
 
   defaults format: :json do
     namespace :api do
-      resources :users do
-        collection do
-          get :profile
-        end
+      devise_scope :user do
+        get '/users/profile' => 'users#profile'
       end
+
       resources :articles, only: %I[index create] do
         resources :comments, only: %I[index create update destroy]
       end

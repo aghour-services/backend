@@ -3,6 +3,7 @@
 Rails.application.routes.draw do
   defaults format: :html do
     resources :users
+    resources :devices, only: %I[index]
     resources :firms, only: %I[index create]
     resources :articles, only: %I[index update edit]
     resources :categories do
@@ -12,7 +13,7 @@ Rails.application.routes.draw do
 
   defaults format: :json do
     namespace :api do
-
+      resources :devices, only: %I[create]
       devise_scope :user do
         get '/users/profile' => 'users#profile'
       end

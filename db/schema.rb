@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_01_131429) do
+ActiveRecord::Schema.define(version: 2022_12_06_184910) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(version: 2022_12_01_131429) do
     t.datetime "last_usage_time"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["device_id"], name: "index_devices_on_device_id", unique: true
   end
 
   create_table "firms", force: :cascade do |t|

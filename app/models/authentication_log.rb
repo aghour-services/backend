@@ -1,0 +1,2 @@
+class AuthenticationLog < ApplicationRecord
+end

@@ -1,19 +1,17 @@
 <table class="table table-bordered">
   <thead>
     <tr>
-      <th scope="col">#</th>
       <th scope="col">Device ID</th>
-      <th scope="col">Token</th>
       <th scope="col">Last Time Usage</th>
+      <th scope="col">Token</th>
     </tr>
   </thead>
   <tbody>
     <% @devices.each do |device| %>
       <tr>
-        <td><%= device.id %> </td>
         <td><%= device.device_id %></td>
+        <td class="text-success"><%= device.time_ago %></td>
         <td><%= device.token %></td>
-        <td style="color: green;"><%= device.last_usage_time %></td>
       </tr>
     </tbody>
   <% end %>

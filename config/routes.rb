@@ -18,7 +18,7 @@ Rails.application.routes.draw do
         get '/users/profile' => 'users#profile'
       end
 
-      resources :articles, only: %I[index create] do
+      resources :articles, only: %I[index create update destroy] do
         resources :comments, only: %I[index create update destroy]
       end
       resources :search, only: %I[index]

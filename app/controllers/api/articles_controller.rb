@@ -4,11 +4,12 @@ module Api
   class ArticlesController < ApiController
     CACHE_KEY = 'articles#index'
 
-    before_action :authenticate_user!, only: [:create]
-    before_action :user_ability, only: [:create]
+    before_action :authenticate_user!, only: [:create, :update, :destroy]
+    before_action :user_ability, only: [:create, :update, :destroy]
+    before_action :find_article, only: [:update, :destroy]
 
-    after_action :cache_response, only: [:index]
-    before_action :check_cached, only: [:index]
+    # after_action :cache_response, only: [:index]
+    # before_action :check_cached, only: [:index]
 
     def index
       # if @cached_response
@@ -25,7 +26,31 @@ module Api
       render :create, status: :created if @article.save
     end
 
+    def update
+      if @article.user == current_user
+        if @article.update(article_params)
+         render :update, status: :ok
+        end
+      else
+        render json: { error: 'You can only edit your own articles' }
+      end
+    end
+
+    def destroy
+      if @article.user == current_user
+        if @article.destroy
+          head :no_content
+        end
+      else
+        render json: { error: 'You can only delete your own articles' }
+      end
+    end
+
     private
+
+    def find_article
+      @article = Article.find(params[:id])
+    end
 
     def article_params
       params.require(:article).permit(:description)

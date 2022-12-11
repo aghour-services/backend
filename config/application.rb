@@ -21,11 +21,13 @@ require 'action_cable/engine'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+require_relative '../app/middleware/custom_middleware'
+
 module AghourServicesBackend
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
-
+    config.middleware.use CustomMiddleware
     config.public_file_server.enabled = true
 
     # Configuration for the application, engines, and railties goes here.

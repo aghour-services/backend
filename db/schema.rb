@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_14_073900) do
+ActiveRecord::Schema.define(version: 2023_02_18_163315) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,12 +78,10 @@ ActiveRecord::Schema.define(version: 2022_12_14_073900) do
   end
 
   create_table "devices", force: :cascade do |t|
-    t.string "device_id"
     t.string "token"
     t.datetime "last_usage_time"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["device_id"], name: "index_devices_on_device_id", unique: true
   end
 
   create_table "firms", force: :cascade do |t|

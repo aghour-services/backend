@@ -4,8 +4,7 @@ require 'action_view/helpers'
 
 class Device < ApplicationRecord
   include ActionView::Helpers::DateHelper
-  validates :device_id, presence: true, uniqueness: true
-  validates :token, presence: true
+  validates :token, presence: true, uniqueness: true
 
   def time_ago
     return if last_usage_time == nil

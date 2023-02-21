@@ -8,9 +8,8 @@ RSpec.describe 'Api::Articles', type: :request do
     context 'When invalid user' do
       it 'creates draft article' do
         headers = { TOKEN: Faker::Name.name }
-        expect do
-          post '/api/articles', params: { article: { description: article.description } }, headers: headers
-        end.to raise_error(ActiveRecord::RecordNotFound)
+        post '/api/articles', params: { article: { description: article.description } }, headers: headers
+        expect(response.status).to eq(401)
       end
     end
 
@@ -18,7 +17,7 @@ RSpec.describe 'Api::Articles', type: :request do
       it 'creates draft article' do
         headers = { TOKEN: user.token }
         expect do
-          post '/api/articles', params: { article: { description: article.description } }, headers: headers
+          post '/api/articles', params: { article: { description: article.description } }, headers:
         end.to change { Article.count }.by(1)
         expect(Article.last.status.to_s).to eq('draft')
       end
@@ -29,7 +28,7 @@ RSpec.describe 'Api::Articles', type: :request do
       it 'creates published article' do
         headers = { TOKEN: user.token }
         expect do
-          post '/api/articles', params: { article: { description: article.description } }, headers: headers
+          post '/api/articles', params: { article: { description: article.description } }, headers:
         end.to change { Article.count }.by(1)
         expect(Article.last.status.to_s).to eq('published')
       end
@@ -40,7 +39,7 @@ RSpec.describe 'Api::Articles', type: :request do
       it 'creates published articles' do
         headers = { TOKEN: user.token }
         expect do
-          post '/api/articles', params: { article: { description: article.description } }, headers: headers
+          post '/api/articles', params: { article: { description: article.description } }, headers:
         end.to change { Article.count }.by(1)
         expect(Article.last.status.to_s).to eq('published')
       end

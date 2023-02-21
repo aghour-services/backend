@@ -8,7 +8,7 @@ class ApiController < ActionController::API
   def authenticate_user!
     self.current_user = User.find_by token: request.headers['TOKEN']
     unless current_user
-      AuthenticationLog.create(user_token: request.headers['TOKEN'], path: request.path, action_name: action_name)
+      AuthenticationLog.create(user_token: request.headers['TOKEN'], path: request.path, action_name:)
       render json: { error: 'Unauthorized' }, status: :unauthorized
     end
   end

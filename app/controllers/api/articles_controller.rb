@@ -4,9 +4,9 @@ module Api
   class ArticlesController < ApiController
     CACHE_KEY = 'articles#index'
 
-    before_action :authenticate_user!, only: [:create, :update, :destroy]
-    before_action :user_ability, only: [:create, :update, :destroy]
-    before_action :find_article, only: [:update, :destroy]
+    before_action :authenticate_user!, only: %i[create update destroy]
+    before_action :user_ability, only: %i[create update destroy]
+    before_action :find_article, only: %i[update destroy]
 
     # after_action :cache_response, only: [:index]
     # before_action :check_cached, only: [:index]
@@ -28,9 +28,7 @@ module Api
 
     def update
       if @article.user == current_user
-        if @article.update(article_params)
-         render :update, status: :ok
-        end
+        render :update, status: :ok if @article.update(article_params)
       else
         render json: { error: 'You can only edit your own articles' }
       end
@@ -38,9 +36,7 @@ module Api
 
     def destroy
       if @article.user == current_user
-        if @article.destroy
-          head :no_content
-        end
+        head :no_content if @article.destroy
       else
         render json: { error: 'You can only delete your own articles' }
       end

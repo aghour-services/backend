@@ -28,12 +28,12 @@ gem 'redis', '~> 4.2.5'
 
 group :development, :test do
   gem 'byebug', platforms: %I[mri mingw x64_mingw]
-  gem 'factory_bot_rails', '~> 6.1.0'
+  gem 'factory_bot_rails'
   gem 'faker'
-  gem 'rails-controller-testing', '~> 1.0.5'
-  gem 'rspec-rails', '~> 4.0.1'
-  gem 'rubocop', '~> 1.19'
-  gem 'shoulda-matchers', '~> 4.4.1'
+  # gem 'rails-controller-testing'
+  gem 'rspec-rails'
+  gem 'rubocop'
+  gem 'shoulda-matchers'
 end
 
 group :development do

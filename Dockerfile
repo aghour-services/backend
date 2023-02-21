@@ -1,4 +1,4 @@
-FROM ruby:3.2-rc
+FROM ruby:3.1
 
 RUN apt update --fix-missing
 
@@ -10,6 +10,8 @@ RUN mkdir -p /app
 ENV APP_PATH /app/
 WORKDIR $APP_PATH
 ADD . $APP_PATH
+
+RUN bundle config build.nokogiri --use-system-libraries
 
 RUN bundle install -j8
 

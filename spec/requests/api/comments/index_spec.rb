@@ -1,8 +1,6 @@
 RSpec.describe 'Api::Comments', type: :request do
-  let(:user) { create(:user) }
-  let(:article) { build(:article) }
-  let(:comment) { build(:comment) }
-
+  let(:article) { create(:article, :with_user) }
+  let(:comment) { create(:comment) }
 
   describe '#index' do
     it 'returns success with all comments' do

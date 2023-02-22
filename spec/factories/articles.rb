@@ -5,7 +5,7 @@ FactoryBot.define do
     description { Faker::Lorem.paragraph }
   end
 
-  trait :published do
-    status { :published }
+  trait :with_user do
+    user { create(:user) }
   end
 end

@@ -12,8 +12,6 @@ module Api
             @comment = @article.comments.new(comment_params.merge(user: current_user))
             if @comment.save
                 render :create, status: :created
-            else
-                render json: @comment.errors
             end
         end
 
@@ -22,8 +20,6 @@ module Api
                 if @comment.update(comment_params)
                    render :update, status: :ok
                 end
-            else
-                render json: { error: 'You can only edit your own comments' }
             end
         end
 
@@ -32,9 +28,6 @@ module Api
                 if @comment.destroy
                     head :no_content
                 end
-                
-            else
-                render json: { error: 'You can only delete your own comments' }
             end
         end
        

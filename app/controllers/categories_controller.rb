@@ -23,8 +23,11 @@ class CategoriesController < HtmlController
   end
 
   def update
-    @category.update(category_params)
-    redirect_to edit_category_path(@category)
+      if @category.update(category_params)
+         redirect_to edit_category_path(@category),  status: :ok
+      else
+         render :edit, status: :unprocessable_entity
+      end
   end
 
   private

@@ -2,11 +2,11 @@
 
 module Api
   class CategoriesController < ApplicationController
-    CACHE_KEY = 'categories#index'
+    # CACHE_KEY = 'categories#index'
     before_action :fetch_category, only: %I[tags]
 
-    after_action :cache_response, except: %I[tags]
-    before_action :check_cached, except: %I[tags]
+    # after_action :cache_response, except: %I[tags]
+    # before_action :check_cached, except: %I[tags]
 
     def index
       if @cached_response

@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   defaults format: :html do
     resources :users
     resources :devices, only: %I[index]
-    resources :firms, only: %I[index create]
+    resources :firms, only: %I[index create update]
     resources :articles, only: %I[index update edit]
     resources :categories do
       resources :firms

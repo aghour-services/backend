@@ -14,13 +14,20 @@ class CategoriesController < HtmlController
   def edit; end
 
   def create
-    @category = Category.create(category_params)
-    redirect_to edit_category_path(@category)
+    @category = Category.new(category_params)
+    if @category.save
+      redirect_to categories_path, status: :created
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   def update
-    @category.update(category_params)
-    redirect_to edit_category_path(@category)
+      if @category.update(category_params)
+         redirect_to edit_category_path(@category),  status: :ok
+      else
+         render :edit, status: :unprocessable_entity
+      end
   end
 
   private

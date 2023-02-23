@@ -16,13 +16,15 @@ class FirmsController < HtmlController
   def edit; end
 
   def destroy
-    @firm.destroy
-    redirect_to firms_path
+   redirect_to firms_path, alert: 'Deleted Firm' if @firm.destroy
   end
 
   def update
-    @firm.update(firm_params)
-    redirect_to edit_category_firm_path(@firm.category, @firm)
+    if @firm.update(firm_params)
+       redirect_to edit_category_firm_path(@firm.category, @firm) ,  status: :ok
+    else
+        render :edit, status: :unprocessable_entity
+    end
   end
 
   def create
@@ -30,7 +32,7 @@ class FirmsController < HtmlController
     if @firm.save
       redirect_to edit_category_firm_path(@category, @firm)
     else
-      render 'new'
+      render :new, status: :unprocessable_entity
     end
   end
 

@@ -6,6 +6,7 @@ RSpec.describe 'CategoriesController', type: :request do
     context '#successful' do
       it 'creates a category' do
         expect do
+          
           category_params = category.attributes.symbolize_keys
           post '/categories', params: { category: category_params.merge(icon:) }
           expect(response).to have_http_status(:created)

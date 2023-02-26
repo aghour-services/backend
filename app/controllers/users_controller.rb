@@ -12,9 +12,9 @@ class UsersController < HtmlController
   def edit; end
 
   def destroy
-    @user.destroy
-    redirect_to users_path
+    redirect_to users_path, alert: 'Deleted User' if @user.destroy
   end
+
 
   def update
     @user.update(user_params)

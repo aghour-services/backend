@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require "rails_helper"
 
 if ENV['COVERAGE']
   require 'simplecov'

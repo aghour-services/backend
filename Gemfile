@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-gem 'rails', '~> 6.1.4'
+gem 'rails', '~> 7.0'
 
 gem 'pg', '~> 1.1'
 gem 'pg_search'
@@ -30,11 +30,11 @@ group :development, :test do
   gem 'byebug', platforms: %I[mri mingw x64_mingw]
   gem 'factory_bot_rails'
   gem 'faker'
+  gem 'fuubar'
   gem 'rails-controller-testing'
   gem 'rspec-rails'
   gem 'rubocop'
   gem 'shoulda-matchers'
-  gem 'fuubar'
 end
 
 group :development do

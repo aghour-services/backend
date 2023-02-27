@@ -44,7 +44,7 @@ module Api
       if @article.user == current_user
         head :no_content if @article.destroy
       else
-        render json: { error: 'You can only delete your own articles' }
+        render json: { error: 'You can only delete your own articles' }, status: :unauthorized
       end
     end
 

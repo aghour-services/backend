@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-if ENV['COVERAGE']
+if ENV['COV']
   require 'simplecov'
   SimpleCov.start('rails') do
     add_group 'Services', 'app/services'

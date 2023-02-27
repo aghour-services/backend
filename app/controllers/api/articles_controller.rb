@@ -27,11 +27,17 @@ module Api
     end
 
     def update
-      if @article.user == current_user
-        render :update, status: :ok if @article.update(article_params)
+      return not_the_article_owner unless @article.user == current_user
+
+      if @article.update(article_params)
+        render :update, status: :ok
       else
-        render json: { error: 'You can only edit your own articles' }
+        render json: { error: @article.errors.messages }, status: :unprocessable_entity
       end
+    end
+
+    def not_the_article_owner
+      render json: { error: 'You can only edit your own articles' }, status: :unauthorized
     end
 
     def destroy

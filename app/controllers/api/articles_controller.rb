@@ -27,18 +27,24 @@ module Api
     end
 
     def update
-      if @article.user == current_user
-        render :update, status: :ok if @article.update(article_params)
+      return not_the_article_owner unless @article.user == current_user
+
+      if @article.update(article_params)
+        render :update, status: :ok
       else
-        render json: { error: 'You can only edit your own articles' }
+        render json: { error: @article.errors.messages }, status: :unprocessable_entity
       end
+    end
+
+    def not_the_article_owner
+      render json: { error: 'You can only edit your own articles' }, status: :unauthorized
     end
 
     def destroy
       if @article.user == current_user
         head :no_content if @article.destroy
       else
-        render json: { error: 'You can only delete your own articles' }
+        render json: { error: 'You can only delete your own articles' }, status: :unauthorized
       end
     end
 
@@ -52,14 +58,14 @@ module Api
       params.require(:article).permit(:description)
     end
 
-    def check_cached
-      @cached_response = REDIS_CLIENT.get CACHE_KEY
-    rescue StandardError => e
-    end
+    # def check_cached
+    #   @cached_response = REDIS_CLIENT.get CACHE_KEY
+    # rescue StandardError => e
+    # end
 
-    def cache_response
-      REDIS_CLIENT.setex CACHE_KEY, 3.hours, response.body
-    rescue StandardError => e
-    end
+    # def cache_response
+    #   REDIS_CLIENT.setex CACHE_KEY, 3.hours, response.body
+    # rescue StandardError => e
+    # end
   end
 end

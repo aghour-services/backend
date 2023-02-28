@@ -39,5 +39,17 @@ RSpec.describe "Api::Firms", type: :request do
         expect(Firm.last.status.to_s).to eq("published")
       end
     end
+
+    context "doesn't create firm" do
+      let(:user) { create(:user) }
+      it "doesn't published firms" do
+        headers = { TOKEN: user.token }
+        firm_params = { firm: firm.attributes }
+        expect do
+          post "/api/firms", params: firm_params, headers: headers
+        end.to change { Firm.count }.by(0)
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
   end
 end

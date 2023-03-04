@@ -4,9 +4,9 @@ module Api
   class ArticlesController < ApiController
     CACHE_KEY = "articles#index"
 
-    before_action :authenticate_user!, only: %i[create update destroy]
-    before_action :user_ability, only: %i[create update destroy]
-    before_action :find_article, only: %i[show update destroy liked_users]
+    before_action :authenticate_user!, only: %i[create update destroy like unlike]
+    before_action :user_ability, only: %i[create update destroy like unlike]
+    before_action :find_article, only: %i[show update destroy like unlike liked_users]
 
     # after_action :cache_response, only: [:index]
     # before_action :check_cached, only: [:index]
@@ -47,6 +47,23 @@ module Api
         head :no_content if @article.destroy
       else
         render json: { error: "You can only delete your own articles" }, status: :unauthorized
+      end
+    end
+
+    def like
+      if @article
+        current_user.likes.create(article: @article)
+        render json: @article.likes.count, status: :ok
+      else
+        render json: { error: "Article not found" }, status: :not_found
+      end
+    end
+
+    def unlike
+      if @article && current_user.likes.find_by(article: @article)&.destroy
+        render json: @article.likes.count, status: :ok
+      else
+        render json: { error: "Article not found or not liked by user" }, status: :not_found
       end
     end
 

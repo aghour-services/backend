@@ -1,25 +1,23 @@
 module Api
   class LikesController < ApiController
-    before_action :authenticate_user!
-    before_action :set_article
+    before_action :authenticate_user!, only: %i[like unlike]
+    before_action :user_ability, only: %i[like unlike]
+    before_action :set_article, only: %i[like unlike]
 
-    def create
-      @like = @article.likes.create(user: current_user)
-
-      if @like.save
-        render json: { message: "#{current_user.name} liked this article" }, status: :ok
+    def like
+      if @article
+        current_user.likes.create(article: @article)
+        render json: @article.likes.count, status: :ok
       else
-        render json: { error: "You must create an account" }, status: :unauthorized
+        render json: { error: "Article not found" }, status: :not_found
       end
     end
 
-    def destroy
-      @like = @article.likes.find(params[:id])
-
-      if @like.destroy
-        render json: { message: "#{current_user.name} removed like" }, status: :ok
+    def unlike
+      if @article && current_user.likes.find_by(article: @article)&.destroy
+        render json: @article.likes.count, status: :ok
       else
-        render json: { error: "You must create an account" }, status: :unauthorized
+        render json: { error: "Article not found or not liked by user" }, status: :not_found
       end
     end
 

@@ -50,10 +50,6 @@ module Api
       end
     end
 
-    def liked_users
-      @likes = @article.liking_users
-    end
-
     private
 
     def find_article

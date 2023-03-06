@@ -1,8 +1,8 @@
 module Api
   class LikesController < ApiController
-    before_action :authenticate_user!, only: %i[like unlike]
-    before_action :user_ability, only: %i[like unlike]
-    before_action :set_article, only: %i[like unlike]
+    before_action :authenticate_user!, only: %i[likes like unlike]
+    before_action :user_ability, only: %i[likes like unlike]
+    before_action :set_article, only: %i[likes like unlike]
 
     def like
       if @article
@@ -19,6 +19,10 @@ module Api
       else
         render json: { error: "Article not found or not liked by user" }, status: :not_found
       end
+    end
+
+    def likes
+      @likes = @article.likes.includes(:user)
     end
 
     private

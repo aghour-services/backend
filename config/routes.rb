@@ -20,9 +20,11 @@ Rails.application.routes.draw do
 
       resources :articles, only: %I[index create show update destroy] do
         resources :comments, only: %I[index create update destroy]
-        resource :likes, only: %I[create index] do
-          delete "unlike" => "likes#unlike"
+        resource :likes, only: %I[create] do
+          get :index
+          delete :unlike
         end
+
       end
       resources :search, only: %I[index]
       resources :firms

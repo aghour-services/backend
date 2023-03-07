@@ -18,9 +18,10 @@ Rails.application.routes.draw do
         get '/users/profile' => 'users#profile'
       end
 
-      resources :articles, only: %I[index create update destroy] do
+      resources :articles, only: %I[index create show update destroy] do
         resources :comments, only: %I[index create update destroy]
         post "like" => "likes#like"
+        delete "unlike" => "likes#unlike"
       end
       resources :search, only: %I[index]
       resources :firms

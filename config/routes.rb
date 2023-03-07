@@ -20,6 +20,7 @@ Rails.application.routes.draw do
 
       resources :articles, only: %I[index create update destroy] do
         resources :comments, only: %I[index create update destroy]
+        post "like" => "likes#like"
       end
       resources :search, only: %I[index]
       resources :firms

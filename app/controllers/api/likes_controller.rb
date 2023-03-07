@@ -1,5 +1,21 @@
 module Api
   class LikesController < ApiController
-    
+    before_action :authenticate_user!, only: %i[like]
+    before_action :user_ability, only: %i[like]
+    before_action :set_article, only: %i[like]
+
+    def like
+      if @article
+        current_user.likes.create(article: @article)
+        render json: @article.likes.count, status: :ok
+      else
+        render json: { error: "Article not found" }, status: :not_found
+      end
+    end
+    private
+
+    def set_article
+      @article = Article.find(params[:article_id])
+    end
   end
 end

@@ -5,19 +5,13 @@ module Api
     before_action :set_article, only: %i[create unlike]
 
     def create
-      if @article
-        render json: @article.likes.count, status: :ok
-      else
-        render json: { error: "Article not found" }, status: :not_found
-      end
+      current_user.likes.create(article: @article)
+      render json: @article.likes.count, status: :ok
     end
 
     def unlike
-      if @article && current_user.likes.find_by(article: @article)&.destroy
-        render json: @article.likes.count, status: :ok
-      else
-        render json: { error: "Article not found or not liked by user" }, status: :not_found
-      end
+      current_user.likes.find_by(article: @article)&.destroy
+      render json: @article.likes.count, status: :ok
     end
 
     private

@@ -8,7 +8,7 @@ RSpec.describe 'Api::Likes', type: :request do
       context '#success' do
         context 'with authorized user' do
           it 'deletes the like' do
-            delete "/api/articles/#{article.id}/unlike", headers: headers
+            delete "/api/articles/#{article.id}/likes/unlike", headers: headers
             expect(response).to have_http_status(:ok)
             expect(Like.count).to eq(0)
           end
@@ -19,7 +19,7 @@ RSpec.describe 'Api::Likes', type: :request do
       context "#failure" do
         context "with unauthorized user" do
           it "don't deletes the like" do
-            delete "/api/articles/#{article.id}/unlike"
+            delete "/api/articles/#{article.id}/likes/unlike"
             expect(response).to have_http_status(:unauthorized)
             expect(Like.count).to eq(1)
           end

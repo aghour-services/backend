@@ -11,6 +11,7 @@ RSpec.describe "Api::Likes", type: :request do
             expect(response.status).to eq(200)
         end
     end
+
     context "#failure" do
       it "creates like to article" do
           post "/api/articles/#{article.id}/likes"

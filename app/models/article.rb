@@ -10,6 +10,7 @@ class Article < ApplicationRecord
   validates :description, presence: true
   belongs_to :user
   has_many :comments, dependent: :destroy
+  has_many :likes
 
   enum status: { draft: 0, published: 1 }, _default: :draft
   after_create :send_notification, :clear_cache

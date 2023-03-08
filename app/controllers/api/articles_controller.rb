@@ -2,7 +2,7 @@
 
 module Api
   class ArticlesController < ApiController
-    CACHE_KEY = 'articles#index'
+    CACHE_KEY = "articles#index"
 
     before_action :authenticate_user!, only: %i[create update destroy]
     before_action :user_ability, only: %i[create update destroy]
@@ -16,7 +16,8 @@ module Api
       #   render json: @cached_response
       #   return
       # end
-      @articles = Article.includes(:user, :comments).published.order(id: :desc).first(50)
+      @articles = Article.includes(:user, :comments, :likes).published.order(id: :desc).first(50)
+      @current_user = User.find_by(token: request.headers["TOKEN"])
     end
 
     def create
@@ -37,14 +38,14 @@ module Api
     end
 
     def not_the_article_owner
-      render json: { error: 'You can only edit your own articles' }, status: :unauthorized
+      render json: { error: "You can only edit your own articles" }, status: :unauthorized
     end
 
     def destroy
       if @article.user == current_user
         head :no_content if @article.destroy
       else
-        render json: { error: 'You can only delete your own articles' }, status: :unauthorized
+        render json: { error: "You can only delete your own articles" }, status: :unauthorized
       end
     end
 

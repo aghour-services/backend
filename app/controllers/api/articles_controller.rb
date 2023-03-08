@@ -4,6 +4,7 @@ module Api
   class ArticlesController < ApiController
     CACHE_KEY = "articles#index"
 
+    before_action :authenticate_user, only: %i[index]
     before_action :authenticate_user!, only: %i[create update destroy]
     before_action :user_ability, only: %i[create update destroy]
     before_action :find_article, only: %i[update destroy]
@@ -17,7 +18,7 @@ module Api
       #   return
       # end
       @articles = Article.includes(:user, :comments, :likes).published.order(id: :desc).first(50)
-      @current_user = User.find_by(token: request.headers["TOKEN"])
+      @current_user = current_user
     end
 
     def create

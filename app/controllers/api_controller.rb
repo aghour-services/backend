@@ -13,6 +13,10 @@ class ApiController < ActionController::API
     end
   end
 
+  def authenticate_user
+    self.current_user = User.find_by(token: request.headers["TOKEN"])
+  end
+
   def user_ability
     @user_ability = UserAbility.new(current_user)
   end

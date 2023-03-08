@@ -15,6 +15,13 @@ RSpec.describe 'Api::Likes', type: :request do
         end
       end
 
+      context "when article does not exist" do
+        it "returns a not found error" do
+          delete "/api/articles/invalid_id/likes/unlike", headers: headers
+          expect(response).to have_http_status(:not_found)
+          expect(response.body).to eq({ error: "Article not found or not liked by user" }.to_json)
+        end
+      end
 
       context "#failure" do
         context "with unauthorized user" do

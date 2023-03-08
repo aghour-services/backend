@@ -9,19 +9,26 @@ module Api
     end
 
     def create
-      current_user.likes.create(article: @article)
-      render json: @article.likes.count, status: :ok
+      if @article
+        current_user.likes.create(article: @article)
+        render json: @article.likes.count, status: :ok
+      else
+        render json: { error: "Article not found" }, status: :not_found
+      end
     end
 
     def unlike
-      current_user.likes.find_by(article: @article)&.destroy
-      render json: @article.likes.count, status: :ok
+      if @article && current_user.likes.find_by(article: @article)&.destroy
+        render json: @article.likes.count, status: :ok
+      else
+        render json: { error: "Article not found or not liked by user" }, status: :not_found
+      end
     end
 
     private
 
     def set_article
-      @article = Article.find(params[:article_id])
+      @article = Article.find_by(id: params[:article_id])
     end
   end
 end

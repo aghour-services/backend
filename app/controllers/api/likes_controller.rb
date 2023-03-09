@@ -15,7 +15,7 @@ module Api
 
     def unlike
       current_user.likes.find_by(article: @article)&.destroy
-      render json: @article.likes.count, status: :ok
+      head :no_content
     end
 
     private

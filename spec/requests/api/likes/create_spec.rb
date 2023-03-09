@@ -1,21 +1,33 @@
-RSpec.describe "Api::Likes", type: :request do
-  let(:user) {create(:user)}
-  let(:article) { create(:article , user:) }
-  let(:headers) { { TOKEN: user.token } }
+RSpec.describe 'Api::Likes', type: :request do
+  let(:user) { create(:user) }
+  let(:article) { create(:article, user:) }
+  let(:request_headers) { { TOKEN: user.token } }
+
   describe '#create' do
-    context '#success' do
-        it "creates like to article" do
-            expect {
-                post "/api/articles/#{article.id}/likes", headers: headers
-            }.to change(Like, :count).by(1)
-            expect(response.status).to eq(200)
-        end
+    context 'when article exists' do
+      it 'creates a new like for the current user and article' do
+        expect do
+          post "/api/articles/#{article.id}/likes", headers: request_headers
+          expect(response).to have_http_status(:ok)
+          expect(response.body).to eq(article.likes.count.to_s)
+        end.to change(Like, :count).by(1)
+      end
     end
 
-    context "#failure" do
-      it "creates like to article" do
+    context 'when article does not exist' do
+      it 'returns a not found error' do
+        expect do
+          post('/api/articles/invalid_id/likes', headers: request_headers)
+        end.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context "when current_user doesn't exist" do
+      it 'returns unauthorized error' do
+        expect do
           post "/api/articles/#{article.id}/likes"
-          expect(response.status).to eq(401)
+          expect(response).to have_http_status(:unauthorized)
+        end.not_to change(Like, :count)
       end
     end
   end

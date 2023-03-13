@@ -16,6 +16,10 @@ class User < ApplicationRecord
 
   enum role: { user: 0, publisher: 1, admin: 2 }, _default: :user
 
+  def is_verified?
+    return self.role == "user" ? false : true
+  end
+
   def generate_token
     self.token = "#{id}/#{SecureRandom.urlsafe_base64(nil, false)}"
   end

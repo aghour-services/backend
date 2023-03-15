@@ -4,6 +4,7 @@ json.id article.id
 json.description article.description
 json.status article.status
 json.likes_count article.likes.count
+json.comments_count article.comments.count
 json.liked article.liked?(@current_user)
 json.created_at article.time_ago
 json.user do

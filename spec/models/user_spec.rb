@@ -24,7 +24,7 @@ RSpec.describe User, type: :model do
     context 'when user role is publisher' do
 
       before {
-        user.update(role: 1)
+        user.update(role: 'publisher')
       }
 
       it do
@@ -34,7 +34,7 @@ RSpec.describe User, type: :model do
 
     context "when user role is admin" do
       before {
-        user.update(role: 2)
+        user.update(role: 'admin')
       }
 
       it do

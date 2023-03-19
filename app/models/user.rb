@@ -19,7 +19,7 @@ class User < ApplicationRecord
   def verified?
     return role != "user"
   end
-  
+
   def generate_token
     self.token = "#{id}/#{SecureRandom.urlsafe_base64(nil, false)}"
   end

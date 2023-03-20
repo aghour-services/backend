@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     resources :users
     resources :devices, only: %I[index]
     resources :firms, only: %I[index create update]
-    resources :articles, only: %I[index update edit destroy]
+    resources :articles
     resources :categories do
       resources :firms
     end

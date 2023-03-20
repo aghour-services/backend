@@ -23,7 +23,6 @@ module Api
 
     def create
       @article = Article.new(article_params.merge(user: current_user))
-      @article.upload(params[:image_url].read)
       @article.status = :published if user_ability.can_publish?
 
       render :create, status: :created if @article.save

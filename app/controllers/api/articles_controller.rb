@@ -20,16 +20,21 @@ module Api
       @articles = Article.includes(:user, :comments, :likes).published.order(id: :desc).first(50)
       @current_user = current_user
     end
-
+    
     def create
       @article = Article.new(article_params.merge(user: current_user))
       @article.status = :published if user_ability.can_publish?
 
-      if params[:article][:image_url].present?
-        imgur_link = ImgurUploader.upload(params[:article][:image_url].tempfile.path)
-        @article.image_url = imgur_link
+      if @article.save
+        if params[:attachments].present? && params[:attachments][:image].present?
+          imgur_link = ImgurUploader.upload(params[:attachments][:image].tempfile.path)
+          @article.attachments.create(image: imgur_link)
+        end
+
+        render :create, status: :created
+      else
+        render json: { errors: @article.errors }, status: :unprocessable_entity
       end
-      render :create, status: :created if @article.save
     end
     
     def update

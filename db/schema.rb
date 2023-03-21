@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_19_171247) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_21_195108) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -48,9 +48,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_19_171247) do
     t.integer "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "image_url"
     t.index ["status"], name: "index_articles_on_status"
     t.index ["user_id"], name: "index_articles_on_user_id"
+  end
+
+  create_table "attachments", force: :cascade do |t|
+    t.string "image"
+    t.bigint "article_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["article_id"], name: "index_attachments_on_article_id"
   end
 
   create_table "authentication_logs", force: :cascade do |t|
@@ -138,6 +145,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_19_171247) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "attachments", "articles"
   add_foreign_key "comments", "articles"
   add_foreign_key "comments", "users"
   add_foreign_key "likes", "articles"

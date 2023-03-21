@@ -7,25 +7,6 @@ class ArticlesController < HtmlController
     @articles = Article.order(id: :desc).last(300)
   end
 
-  def new
-    @article = Article.new
-  end
-
-  def create
-    @article = Article.new(article_params)
-
-    if params[:article][:image_url].present?
-      imgur_link = ImgurUploader.upload(params[:article][:image_url].tempfile.path)
-      @article.image_url = imgur_link
-    end
-
-    if @article.save
-      redirect_to articles_path
-    else
-      render :new
-    end
-  end
-
   def edit; end
 
   def destroy

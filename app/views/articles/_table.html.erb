@@ -4,7 +4,7 @@
       <th scope="col">#</th>
       <th scope="col">Description</th>
       <th scope="col">Status</th>
-      <th scope="col">Image URL</th>
+      <th scope="col">User</th>
       <th scope="col">Actions</th>
     </tr>
   </thead>
@@ -14,7 +14,6 @@
         <td><%= article.id %></td>
         <td><%= article.description %></td>
         <td> <%= status(article.status) %> </td>
-        <td> <%= link_to "Image Url", article.image_url %> </td>
         <td> <%= article.user&.display %> </td>
         <td>
           <%= button_to 'Edit', edit_article_path(article), class: "btn btn-outline-success", method: :get, data: {conarticle: "Are you sure?"} %>

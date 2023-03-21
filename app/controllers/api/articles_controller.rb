@@ -25,9 +25,13 @@ module Api
       @article = Article.new(article_params.merge(user: current_user))
       @article.status = :published if user_ability.can_publish?
 
+      if params[:article][:image_url].present?
+        imgur_link = ImgurUploader.upload(params[:article][:image_url].tempfile.path)
+        @article.image_url = imgur_link
+      end
       render :create, status: :created if @article.save
     end
-
+    
     def update
       return not_the_article_owner unless @article.user == current_user
 

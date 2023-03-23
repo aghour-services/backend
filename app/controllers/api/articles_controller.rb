@@ -2,7 +2,7 @@
 
 module Api
   class ArticlesController < ApiController
-    CACHE_KEY = "articles#index"
+    CACHE_KEY = 'articles#index'
 
     before_action :authenticate_user, only: %i[index]
     before_action :authenticate_user!, only: %i[create update destroy]
@@ -20,23 +20,22 @@ module Api
       @articles = Article.includes(:user, :comments, :likes).published.order(id: :desc).first(50)
       @current_user = current_user
     end
-    
+
     def create
       @article = Article.new(article_params.merge(user: current_user))
       @article.status = :published if user_ability.can_publish?
 
       if @article.save
-        if params[:attachments].present? && params[:attachments][:image].present?
-          imgur_link = ImgurUploader.upload(params[:attachments][:image].tempfile.path)
+        if params[:attachment].present?
+          imgur_link = ImgurUploader.upload(params[:attachment].tempfile.path)
           @article.attachments.create(image: imgur_link)
         end
-
         render :create, status: :created
       else
         render json: { errors: @article.errors }, status: :unprocessable_entity
       end
     end
-    
+
     def update
       return not_the_article_owner unless @article.user == current_user
 
@@ -48,14 +47,14 @@ module Api
     end
 
     def not_the_article_owner
-      render json: { error: "You can only edit your own articles" }, status: :unauthorized
+      render json: { error: 'You can only edit your own articles' }, status: :unauthorized
     end
 
     def destroy
       if @article.user == current_user
         head :no_content if @article.destroy
       else
-        render json: { error: "You can only delete your own articles" }, status: :unauthorized
+        render json: { error: 'You can only delete your own articles' }, status: :unauthorized
       end
     end
 

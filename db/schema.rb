@@ -48,6 +48,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_21_195108) do
     t.integer "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "attachment_url"
     t.index ["status"], name: "index_articles_on_status"
     t.index ["user_id"], name: "index_articles_on_user_id"
   end

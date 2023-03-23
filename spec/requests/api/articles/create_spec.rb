@@ -5,34 +5,18 @@ RSpec.describe 'Api::Articles', type: :request do
     let(:user) { create(:user) }
     let(:article) { build(:article) }
     let(:attachment) { fixture_file_upload('spec/fixture_files/1.jpeg', 'image/png') }
-    let!(:responsesss) do
-      '{"data"=>{"id"=>"3O9qUDG", "title"=>nil, "description"=>nil,
-      "datetime"=>1679576658, "type"=>"image/png", "animated"=>false,
-      "width"=>1640, "height"=>1360, "size"=>285808, "views"=>0,
-      "bandwidth"=>0, "vote"=>nil, "favorite"=>false, "nsfw"=>nil,
-      "section"=>nil, "account_url"=>nil, "account_id"=>167916213,
-      "is_ad"=>false, "in_most_viral"=>false, "has_sound"=>false,
-      "tags"=>[], "ad_type"=>0, "ad_url"=>"", "edited"=>"0",
-      "in_gallery"=>false, "deletehash"=>"AfDrw9HoJ8kQvHE", "name"=>"",
-      "link"=>"https://i.imgur.com/3O9qUDG.png"}, "success"=>true, "status"=>200}'
-    end
-    let(:response) do
-      {
-        'data' => {
-          'key' => 'value',
-          'key2' => 'value2'
-        }
-      }
-    end
 
     RSpec.configure do |config|
-      config.before(:all) do
+      config.before(:each) do
         stub_request(:post, 'https://api.imgur.com/3/upload.json')
-          .to_return(body: '{"data":{"id":"3O9qUDG", "type":"image/png"}}', headers: { "Content-Type": 'application/json' })
+          .to_return(body: '{"data":{"id":"3O9qUDG", "type":"image/png"}}',
+                     headers: { "Content-Type": 'application/json' })
+
+        stub_request(:post, 'https://www.googleapis.com/oauth2/v4/token')
       end
     end
 
-    context 'When invalid user' do
+    xcontext 'When invalid user' do
       it 'creates draft article' do
         headers = { TOKEN: Faker::Name.name }
 

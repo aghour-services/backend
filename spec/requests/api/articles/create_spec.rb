@@ -41,7 +41,7 @@ RSpec.describe 'Api::Articles', type: :request do
       end
     end
 
-    fcontext 'When default user' do
+    context 'When default user' do
       it 'creates draft article' do
         headers = { TOKEN: user.token }
         expect do

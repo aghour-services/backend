@@ -18,8 +18,6 @@ class ImgurUploader
     request.set_form_data(params)
 
     response = https.request(request)
-    byebug
     JSON.parse(response.body)['data']
-    # hash['data']['link']
   end
 end

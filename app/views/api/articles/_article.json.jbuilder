@@ -16,8 +16,3 @@ end
 json.latest_comment do
   json.partial! partial: '/api/comments/comment', comment: article.comments.last if article.comments.last
 end
-
-
-# json.attachments do
-#   json.partial! partial: "/api/attachments/attachment", attachment: article.attachments
-# end

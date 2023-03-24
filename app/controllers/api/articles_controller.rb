@@ -26,9 +26,11 @@ module Api
       @article.status = :published if user_ability.can_publish?
 
       if @article.save
-        if params[:attachment].present?
-          imgur_link = ImgurUploader.upload(params[:attachment].tempfile.path)
-          @article.attachments.create(image: imgur_link)
+        if params[:article][:attachment].present?
+          response = ImgurUploader.upload(params[:article][:attachment].tempfile.path)
+          resource_id = response["id"]
+          resource_type= response["type"]
+          @article.attachments.create(raw_response: response, resource_id:, resource_type:)
         end
         render :create, status: :created
       else
@@ -65,7 +67,7 @@ module Api
     end
 
     def article_params
-      params.require(:article).permit(:description)
+      params.require(:article).permit(:description,)
     end
 
     # def check_cached

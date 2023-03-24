@@ -1,24 +1,24 @@
-# README
+# Aghour Services
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+**Dependencies**
 
-Things you may want to cover:
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+- [Ruby](https://github.com/ruby/ruby)
+- [Rails](https://github.com/rails/rails)
+- [Posgres](https://www.postgresql.org/about/news/postgresql-13-released-2077/)
 
-* Ruby version
+### Install Docker and DockerCompose
 
-* System dependencies
+### Setup Environment
 
-* Configuration
+#### since we have a makefile
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+- up and run dependencies
+```sh
+$ make up
+```
+- start rails console
+```sh
+$ make console
+```

@@ -3,6 +3,7 @@ class CreateAttachments < ActiveRecord::Migration[7.0]
     create_table :attachments do |t|
       t.string :resource_id
       t.string :resource_type
+      t.string :resource_url
       t.text :raw_response
       t.references :article, null: false, foreign_key: true
 

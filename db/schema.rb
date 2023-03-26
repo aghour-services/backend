@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_24_153602) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_21_195108) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -54,11 +54,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_24_153602) do
 
   create_table "attachments", force: :cascade do |t|
     t.string "resource_id"
+    t.string "resource_type"
+    t.text "raw_response"
     t.bigint "article_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "resource_type"
-    t.text "raw_response"
     t.index ["article_id"], name: "index_attachments_on_article_id"
   end
 

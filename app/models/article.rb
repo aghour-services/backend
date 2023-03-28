@@ -10,11 +10,13 @@ class Article < ApplicationRecord
   validates :description, presence: true
   belongs_to :user
   has_many :comments, dependent: :destroy
-  has_many :likes
-
+  has_many :likes, dependent: :destroy
+  has_many :attachments, dependent: :destroy
+  accepts_nested_attributes_for :attachments
+  
   enum status: { draft: 0, published: 1 }, _default: :draft
   after_create :send_notification, :clear_cache
-
+  
   def liked?(current_user)
     return false unless current_user
     likes.where(user_id: current_user.id).exists?

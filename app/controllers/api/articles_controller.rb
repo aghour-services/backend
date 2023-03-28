@@ -2,7 +2,7 @@
 
 module Api
   class ArticlesController < ApiController
-    CACHE_KEY = "articles#index"
+    CACHE_KEY = 'articles#index'
 
     before_action :authenticate_user, only: %i[index]
     before_action :authenticate_user!, only: %i[create update destroy]
@@ -25,7 +25,18 @@ module Api
       @article = Article.new(article_params.merge(user: current_user))
       @article.status = :published if user_ability.can_publish?
 
-      render :create, status: :created if @article.save
+      if @article.save
+        if params[:article][:attachment].present?
+          response = ImgurUploader.upload(params[:article][:attachment].tempfile.path)
+          resource_id = response["id"]
+          resource_type= response["type"]
+          attachment = @article.attachments.create(raw_response: response, resource_id:, resource_type:)
+          resource_url = attachment.resource_url
+        end
+        render :create, status: :created
+      else
+        render json: { errors: @article.errors }, status: :unprocessable_entity
+      end
     end
 
     def update
@@ -39,14 +50,14 @@ module Api
     end
 
     def not_the_article_owner
-      render json: { error: "You can only edit your own articles" }, status: :unauthorized
+      render json: { error: 'You can only edit your own articles' }, status: :unauthorized
     end
 
     def destroy
       if @article.user == current_user
         head :no_content if @article.destroy
       else
-        render json: { error: "You can only delete your own articles" }, status: :unauthorized
+        render json: { error: 'You can only delete your own articles' }, status: :unauthorized
       end
     end
 
@@ -57,7 +68,7 @@ module Api
     end
 
     def article_params
-      params.require(:article).permit(:description)
+      params.require(:article).permit(:description,)
     end
 
     # def check_cached

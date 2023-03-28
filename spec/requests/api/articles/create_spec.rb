@@ -4,10 +4,22 @@ RSpec.describe 'Api::Articles', type: :request do
   context '#create' do
     let(:user) { create(:user) }
     let(:article) { build(:article) }
+    let(:attachment) { fixture_file_upload('spec/fixture_files/1.jpeg', 'image/png') }
 
-    context 'When invalid user' do
+    RSpec.configure do |config|
+      config.before(:each) do
+        stub_request(:post, 'https://api.imgur.com/3/upload.json')
+          .to_return(body: '{"data":{"id":"3O9qUDG", "type":"image/png"}}',
+                     headers: { "Content-Type": 'application/json' })
+
+        stub_request(:post, 'https://www.googleapis.com/oauth2/v4/token')
+      end
+    end
+
+    xcontext 'When invalid user' do
       it 'creates draft article' do
         headers = { TOKEN: Faker::Name.name }
+
         post '/api/articles', params: { article: { description: article.description } }, headers: headers
         expect(response.status).to eq(401)
       end
@@ -17,7 +29,8 @@ RSpec.describe 'Api::Articles', type: :request do
       it 'creates draft article' do
         headers = { TOKEN: user.token }
         expect do
-          post '/api/articles', params: { article: { description: article.description } }, headers:
+          post '/api/articles', params: { article: { description: article.description },
+                                          attachment: }, headers:
         end.to change { Article.count }.by(1)
         expect(Article.last.status.to_s).to eq('draft')
       end

@@ -9,6 +9,8 @@ class NotificationService
   end
 
   def send
+    return unless Rails.env == 'production'
+
     fcm = FCM.new(
       'AIzaSyDuqo8CAeue4IVAdhGwJtdofArV_mzxdV4',
       'aghour-app-firebase.json',

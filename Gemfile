@@ -20,6 +20,7 @@ gem 'newrelic_rpm'
 
 gem 'devise', '~> 4.8'
 gem 'fcm'
+gem 'httparty'
 
 gem 'net-imap' # for rspec
 gem 'net-pop'  # for rspec
@@ -35,6 +36,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'rubocop'
   gem 'shoulda-matchers'
+  gem 'webmock'
 end
 
 group :development do

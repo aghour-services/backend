@@ -22,7 +22,7 @@ class ArticlesController < HtmlController
   private
 
   def article_params
-    params.require(:article).permit(:description, :status)
+    params.require(:article).permit(:description, :status, :image_url)
   end
 
   def fetch_article

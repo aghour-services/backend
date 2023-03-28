@@ -30,8 +30,8 @@ module Api
           response = ImgurUploader.upload(params[:article][:attachment].tempfile.path)
           resource_id = response["id"]
           resource_type= response["type"]
-          attachment = @article.attachments.create(raw_response: response, resource_id:, resource_type:)
-          resource_url = attachment.resource_url
+          attachment = AttachmentRepo.new(@article, response, resource_id, resource_type)
+          attachment.create_attachment          
         end
         render :create, status: :created
       else

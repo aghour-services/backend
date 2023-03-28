@@ -8,7 +8,7 @@ json.comments_count article.comments.count
 json.liked article.liked?(@current_user)
 json.created_at article.time_ago
 json.attachments article.attachments do |attachment|
-  json.partial! partial: "/api/attachments/attachment", attachment: attachment
+  json.partial! partial: '/api/attachments/attachment', attachment:
 end
 json.user do
   json.partial! partial: '/api/users/user', user: article.user

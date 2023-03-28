@@ -16,7 +16,7 @@ RSpec.describe 'Api::Articles', type: :request do
       end
     end
 
-    xcontext 'When invalid user' do
+    context 'When invalid user' do
       it 'creates draft article' do
         headers = { TOKEN: Faker::Name.name }
 
@@ -29,10 +29,10 @@ RSpec.describe 'Api::Articles', type: :request do
       it 'creates draft article' do
         headers = { TOKEN: user.token }
         expect do
-          post '/api/articles', params: { article: { description: article.description },
-                                          attachment: }, headers:
-        end.to change { Article.count }.by(1)
+          post '/api/articles', params: { article: { description: article.description, attachment: } }, headers:
+        end.to change { Article.count }.by(1);
         expect(Article.last.status.to_s).to eq('draft')
+        change { Article.last.attachments.count }.by(1)
       end
     end
 
@@ -41,9 +41,10 @@ RSpec.describe 'Api::Articles', type: :request do
       it 'creates published article' do
         headers = { TOKEN: user.token }
         expect do
-          post '/api/articles', params: { article: { description: article.description } }, headers:
+          post '/api/articles', params: { article: { description: article.description, attachment: } }, headers:
         end.to change { Article.count }.by(1)
         expect(Article.last.status.to_s).to eq('published')
+        change { Article.last.attachments.count }.by(1)
       end
     end
 
@@ -52,9 +53,20 @@ RSpec.describe 'Api::Articles', type: :request do
       it 'creates published articles' do
         headers = { TOKEN: user.token }
         expect do
-          post '/api/articles', params: { article: { description: article.description } }, headers:
+          post '/api/articles', params: { article: { description: article.description, attachment: } }, headers:
         end.to change { Article.count }.by(1)
         expect(Article.last.status.to_s).to eq('published')
+        change { Article.last.attachments.count }.by(1)
+      end
+    end
+
+    context 'with description is nil' do
+      it "doesn't create article and raise an error" do
+        headers = { TOKEN: user.token }
+
+        post "/api/articles", params: { article: { description: nil } }, headers: headers
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(JSON.parse(response.body)["errors"]["description"]).to include("لا يمكن أن يكون محتوى Description فارغاً")
       end
     end
   end

@@ -1,23 +1,23 @@
-require 'net/http'
-require 'uri'
-require 'base64'
-require 'json'
+require "net/http"
+require "uri"
+require "base64"
+require "json"
 
 class ImgurUploader
+  BASE_URL = "https://api.imgur.com/3/upload.json"
+
   def self.upload(image_path)
-    imagedata = Base64.encode64(File.read(image_path, mode: 'rb'))
-    url = 'https://api.imgur.com/3/upload.json'
+    imagedata = Base64.encode64(File.read(image_path, mode: "rb"))
     params = { image: imagedata }
-    uri = URI.parse(url)
+    uri = URI.parse(BASE_URL)
     https = Net::HTTP.new(uri.host, uri.port)
     https.use_ssl = true
 
     request = Net::HTTP::Post.new(uri.path)
-    request['Authorization'] = 'Client-ID 8e6a48d7dbd19d5'
-    request['Authorization'] = 'Bearer 3c14136738ece9b8ec5f1425b0af2587f84f8ba0'
+    request["Authorization"] = ENV["IMGUR_CLIENT_ID"]
+    request["Authorization"] = ENV["IMGUR_ACCESS_TOKEN"]
     request.set_form_data(params)
-
     response = https.request(request)
-    JSON.parse(response.body)['data']
+    JSON.parse(response.body)["data"]
   end
 end

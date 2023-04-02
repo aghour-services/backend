@@ -4,7 +4,7 @@ FactoryBot.define do
   factory :attachment do
     raw_response { Faker::Lorem.paragraph }
     resource_type { 'image/png' }
-    resource_id { Random.hex(16) }
+    resource_id { Random.hex(2) }
   end
 
   trait :with_article do

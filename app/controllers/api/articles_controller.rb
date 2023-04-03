@@ -25,19 +25,22 @@ module Api
       @article = Article.new(article_params.merge(user: current_user))
       @article.status = :published if user_ability.can_publish?
 
-      if @article.save
+      if @article.save!
         if params[:article][:attachment].present?
           response = ImgurUploader.upload(params[:article][:attachment].tempfile.path)
-          resource_id = response["id"]
-          resource_type= response["type"]
-          attachment = AttachmentRepo.new(@article, response, resource_id, resource_type)
-          attachment.create_attachment          
+          if response["success"] == true
+            resource_id = response["data"]["id"]
+            resource_type= response["data"]["type"]
+            attachment = AttachmentRepo.new(@article, response, resource_id, resource_type)
+            attachment.create_attachment
+          end        
         end
         render :create, status: :created
       else
         render json: { errors: @article.errors }, status: :unprocessable_entity
       end
     end
+
 
     def update
       return not_the_article_owner unless @article.user == current_user

@@ -38,6 +38,7 @@ module Api
               raise ActiveRecord::Rollback, 'خطأ في تحميل الصورة حاول مرة أخرى'
             end
           end
+          render json: @article, status: :created
         else
           render json: { errors: @article.errors }, status: :unprocessable_entity
         end

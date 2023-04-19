@@ -6,8 +6,8 @@ module Api
 
     before_action :authenticate_user, only: %i[index]
     before_action :authenticate_user!, only: %i[create update destroy]
-    before_action :user_ability, only: %i[create update destroy]
-    before_action :find_article, only: %i[update destroy]
+    before_action :user_ability, only: %i[create update destroy show]
+    before_action :find_article, only: %i[update destroy show]
 
     # after_action :cache_response, only: [:index]
     # before_action :check_cached, only: [:index]
@@ -20,6 +20,8 @@ module Api
       @articles = Article.includes(:user, :comments, :likes).published.order(id: :desc).first(50)
       @current_user = current_user
     end
+
+    def show;end
 
     def create
       @article = Article.new(article_params.merge(user: current_user))
@@ -68,7 +70,7 @@ module Api
     end
 
     def article_params
-      params.require(:article).permit(:description,)
+      params.require(:article).permit(:description, :status)
     end
 
     # def check_cached

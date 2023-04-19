@@ -23,6 +23,11 @@ module Api
 
     def show;end
 
+    def draft
+      @articles = Article.includes(:user, :comments, :likes).draft.order(id: :desc)
+      @current_user = current_user
+    end
+
     def create
       @article = Article.new(article_params.merge(user: current_user))
       @article.status = :published if user_ability.can_publish?

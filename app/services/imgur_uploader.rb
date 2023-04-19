@@ -18,6 +18,6 @@ class ImgurUploader
     request["Authorization"] = ENV["IMGUR_ACCESS_TOKEN"]
     request.set_form_data(params)
     response = https.request(request)
-    JSON.parse(response.body)["data"]
+    JSON.parse(response.body)
   end
 end

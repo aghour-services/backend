@@ -29,21 +29,29 @@ module Api
     end
 
     def create
-      @article = Article.new(article_params.merge(user: current_user))
-      @article.status = :published if user_ability.can_publish?
+      ActiveRecord::Base.transaction do
+        @article = Article.new(article_params.merge(user: current_user))
+        @article.status = :published if user_ability.can_publish?
 
-      if @article.save
-        if params[:article][:attachment].present?
-          response = ImgurUploader.upload(params[:article][:attachment].tempfile.path)
-          resource_id = response["id"]
-          resource_type= response["type"]
-          attachment = AttachmentRepo.new(@article, response, resource_id, resource_type)
-          attachment.create_attachment          
+        if @article.save!
+          if params[:article][:attachment].present?
+            response = ImgurUploader.upload(params[:article][:attachment].tempfile.path)
+            if response["success"] == true
+              resource_id = response["data"]["id"]
+              resource_type = response["data"]["type"]
+              attachment = AttachmentRepo.new(@article, response, resource_id, resource_type)
+              attachment.create_attachment
+            else
+              raise ActiveRecord::Rollback, 'خطأ في تحميل الصورة حاول مرة أخرى'
+            end
+          end
+          render json: @article, status: :created
+        else
+          render json: { errors: @article.errors }, status: :unprocessable_entity
         end
-        render :create, status: :created
-      else
-        render json: { errors: @article.errors }, status: :unprocessable_entity
       end
+    rescue ActiveRecord::Rollback
+      render json: { error: 'خطأ في تحميل الصورة حاول مرة أخرى' }, status: :unprocessable_entity
     end
 
     def update

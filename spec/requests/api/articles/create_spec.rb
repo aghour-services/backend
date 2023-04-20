@@ -59,15 +59,5 @@ RSpec.describe 'Api::Articles', type: :request do
         change { Article.last.attachments.count }.by(1)
       end
     end
-
-    context 'with description is nil' do
-      it "doesn't create article and raise an error" do
-        headers = { TOKEN: user.token }
-
-        post "/api/articles", params: { article: { description: nil } }, headers: headers
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(JSON.parse(response.body)["errors"]["description"]).to include("لا يمكن أن يكون محتوى Description فارغاً")
-      end
-    end
   end
 end

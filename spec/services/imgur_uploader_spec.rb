@@ -10,7 +10,7 @@ RSpec.describe ImgurUploader do
             "Authorization" => ENV["IMGUR_ACCESS_TOKEN"],
             },
         ).to_return(
-          body: '{"data":{"id":"3O9qUDG", "type":"image/jpeg"}}',
+          body: '{"id":"3O9qUDG", "type":"image/jpeg"}',
         )
 
       imgur_data = ImgurUploader.upload(image_path)

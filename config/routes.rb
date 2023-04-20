@@ -18,6 +18,7 @@ Rails.application.routes.draw do
         get "/users/profile" => "users#profile"
       end
 
+      get "/articles/draft" => "articles#draft"
       resources :articles, only: %I[index create show update destroy] do
         resources :comments, only: %I[index create update destroy]
         resource :likes, only: %I[create] do

@@ -6,8 +6,8 @@ module Api
 
     before_action :authenticate_user, only: %i[index]
     before_action :authenticate_user!, only: %i[create update destroy]
-    before_action :user_ability, only: %i[create update destroy]
-    before_action :find_article, only: %i[update destroy]
+    before_action :user_ability, only: %i[create update destroy show]
+    before_action :find_article, only: %i[update destroy show]
 
     # after_action :cache_response, only: [:index]
     # before_action :check_cached, only: [:index]
@@ -21,30 +21,32 @@ module Api
       @current_user = current_user
     end
 
+    def show;end
+
+    def draft
+      @articles = Article.includes(:user, :comments, :likes).draft.order(id: :desc)
+      @current_user = current_user
+    end
+
     def create
       ActiveRecord::Base.transaction do
         @article = Article.new(article_params.merge(user: current_user))
         @article.status = :published if user_ability.can_publish?
-
-        if @article.save!
+    
+        if @article.save        
           if params[:article][:attachment].present?
             response = ImgurUploader.upload(params[:article][:attachment].tempfile.path)
-            if response["success"] == true
-              resource_id = response["data"]["id"]
-              resource_type = response["data"]["type"]
+            if response['success'] == false
+              raise ActiveRecord::Rollback, 'خطأ في تحميل الصورة حاول مرة أخرى'
+            else
+              resource_id = response['data']['id']
+              resource_type = response['data']['type']
               attachment = AttachmentRepo.new(@article, response, resource_id, resource_type)
               attachment.create_attachment
-            else
-              raise ActiveRecord::Rollback, 'خطأ في تحميل الصورة حاول مرة أخرى'
             end
           end
-          render json: @article, status: :created
-        else
-          render json: { errors: @article.errors }, status: :unprocessable_entity
         end
       end
-    rescue ActiveRecord::Rollback
-      render json: { error: 'خطأ في تحميل الصورة حاول مرة أخرى' }, status: :unprocessable_entity
     end
 
     def update
@@ -76,7 +78,7 @@ module Api
     end
 
     def article_params
-      params.require(:article).permit(:description)
+      params.require(:article).permit(:description, :status)
     end
 
     # def check_cached

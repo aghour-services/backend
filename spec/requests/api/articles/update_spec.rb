@@ -18,6 +18,21 @@ RSpec.describe 'Api::Articles', type: :request do
           end
         end
       end
+
+      context 'with user is admin' do
+        context 'with valid parameters' do
+          let(:admin_user) { create(:user, role: :admin) }
+          let(:headers) { { TOKEN: admin_user.token } }
+          it 'updates the article' do
+            expect do
+              article.description = 'new desc'
+              article_params = article.attributes.symbolize_keys
+              put "/api/articles/#{article.id}", params: { article: article_params }, headers: headers
+              expect(response).to have_http_status(:ok)
+            end.to change { article.description }.to('new desc')
+          end
+        end
+      end
     end
 
     context '#failure' do

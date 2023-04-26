@@ -30,44 +30,46 @@ module Api
 
     def create
       ActiveRecord::Base.transaction do
-        @article = Article.new(article_params.merge(user: current_user))
-        @article.status = :published if user_ability.can_publish?
+        @resource = Article.new(article_params.merge(user: current_user))
+        @resource.status = :published if user_ability.can_publish?
 
-        if @article.save!
-          if params[:article][:attachment].present?
-            response = ImgurUploader.upload(params[:article][:attachment].tempfile.path)
-            raise StandardError, 'خطأ في تحميل الصورة' unless response['success'] == true
+        begin
+          if @resource.save!
+            if params[:article][:attachment].present?
+              response = ImgurUploader.upload(params[:article][:attachment].tempfile.path)
+              raise StandardError, 'خطأ في تحميل الصورة' unless response['success'] == true
 
-            resource_id = response['data']['id']
-            resource_type = response['data']['type']
-            attachment = AttachmentRepo.new(@article, response, resource_id, resource_type)
-            attachment.create_attachment
+              resource_id = response['data']['id']
+              resource_type = response['data']['type']
+              attachment = AttachmentRepo.new(@resource, response, resource_id, resource_type)
+              attachment.create_attachment
+            end
+            render :create, status: :created
           end
-          render :create, status: :created
-        else
-          render json: { errors: @article.errors }, status: :unprocessable_entity
+        rescue StandardError
+          render json: { errors: @resource.errors }, status: :unprocessable_entity
           raise ActiveRecord::Rollback
         end
       end
     end
 
     def update
-      return not_the_article_owner unless @article.user == current_user
+      return unauthorized_user unless user_ability.can_update?
 
-      if @article.update(article_params)
+      if @resource.update(article_params)
         render :update, status: :ok
       else
-        render json: { error: @article.errors.messages }, status: :unprocessable_entity
+        render json: { error: @resource.errors.messages }, status: :unprocessable_entity
       end
     end
 
-    def not_the_article_owner
+    def unauthorized_user
       render json: { error: 'You can only edit your own articles' }, status: :unauthorized
     end
 
     def destroy
-      if @article.user == current_user
-        head :no_content if @article.destroy
+      if user_ability.can_destroy?
+        head :no_content if @resource.destroy
       else
         render json: { error: 'You can only delete your own articles' }, status: :unauthorized
       end
@@ -76,21 +78,11 @@ module Api
     private
 
     def find_article
-      @article = Article.find(params[:id])
+      @resource = Article.find(params[:id])
     end
 
     def article_params
       params.require(:article).permit(:description, :status)
     end
-
-    # def check_cached
-    #   @cached_response = REDIS_CLIENT.get CACHE_KEY
-    # rescue StandardError => e
-    # end
-
-    # def cache_response
-    #   REDIS_CLIENT.setex CACHE_KEY, 3.hours, response.body
-    # rescue StandardError => e
-    # end
   end
 end

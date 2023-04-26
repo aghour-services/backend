@@ -3,10 +3,9 @@
 module Api
   class CategoriesController < ApplicationController
     CACHE_KEY = 'categories#index'
-    before_action :fetch_category, only: %I[tags]
 
-    after_action :cache_response, except: %I[tags]
-    before_action :check_cached, except: %I[tags]
+    after_action :cache_response
+    before_action :check_cached
 
     def index
       if @cached_response
@@ -16,15 +15,7 @@ module Api
       @categories = Category.order(:id)
     end
 
-    def tags
-      @tags = @category.firms.where.not(tags: nil).pluck(:tags).map { |list| list.split('-') }.flatten.uniq.sort
-    end
-
     private
-
-    def fetch_category
-      @category = Category.find params[:category_id]
-    end
 
     def check_cached
       @cached_response = REDIS_CLIENT.get CACHE_KEY

@@ -17,7 +17,7 @@ class User < ApplicationRecord
   enum role: { user: 0, publisher: 1, admin: 2 }, _default: :user
 
   def verified?
-    return role != "user"
+    role != 'user'
   end
 
   def generate_token

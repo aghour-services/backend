@@ -21,7 +21,7 @@ module Api
       @current_user = current_user
     end
 
-    def show;end
+    def show; end
 
     def draft
       @articles = Article.includes(:user, :comments, :likes).draft.order(id: :desc)
@@ -32,13 +32,12 @@ module Api
       ActiveRecord::Base.transaction do
         @article = Article.new(article_params.merge(user: current_user))
         @article.status = :published if user_ability.can_publish?
-      
+
         if @article.save!
           if params[:article][:attachment].present?
             response = ImgurUploader.upload(params[:article][:attachment].tempfile.path)
-            unless response['success'] == true
-              raise StandardError.new('خطأ في تحميل الصورة')
-            end
+            raise StandardError, 'خطأ في تحميل الصورة' unless response['success'] == true
+
             resource_id = response['data']['id']
             resource_type = response['data']['type']
             attachment = AttachmentRepo.new(@article, response, resource_id, resource_type)
@@ -51,7 +50,7 @@ module Api
         end
       end
     end
-    
+
     def update
       return not_the_article_owner unless @article.user == current_user
 

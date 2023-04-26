@@ -33,18 +33,20 @@ module Api
         @article = Article.new(article_params.merge(user: current_user))
         @article.status = :published if user_ability.can_publish?
 
-        if @article.save!
-          if params[:article][:attachment].present?
-            response = ImgurUploader.upload(params[:article][:attachment].tempfile.path)
-            raise StandardError, 'خطأ في تحميل الصورة' unless response['success'] == true
+        begin
+          if @article.save!
+            if params[:article][:attachment].present?
+              response = ImgurUploader.upload(params[:article][:attachment].tempfile.path)
+              raise StandardError, 'خطأ في تحميل الصورة' unless response['success'] == true
 
-            resource_id = response['data']['id']
-            resource_type = response['data']['type']
-            attachment = AttachmentRepo.new(@article, response, resource_id, resource_type)
-            attachment.create_attachment
+              resource_id = response['data']['id']
+              resource_type = response['data']['type']
+              attachment = AttachmentRepo.new(@article, response, resource_id, resource_type)
+              attachment.create_attachment
+            end
+            render :create, status: :created
           end
-          render :create, status: :created
-        else
+        rescue StandardError
           render json: { errors: @article.errors }, status: :unprocessable_entity
           raise ActiveRecord::Rollback
         end

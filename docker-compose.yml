@@ -27,8 +27,14 @@ services:
       - redis
     env_file:
       - environment.env
+    networks:
+      sharednetwork:
     restart: always
 
 volumes:
   postgres:
   bundle_path:
+
+networks:
+  sharednetwork:
+    name: "sharednet"

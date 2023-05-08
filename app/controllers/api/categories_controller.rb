@@ -4,8 +4,8 @@ module Api
   class CategoriesController < ApplicationController
     CACHE_KEY = 'categories#index'
 
-    after_action :cache_response
-    before_action :check_cached
+    # after_action :cache_response
+    # before_action :check_cached
 
     def index
       if @cached_response

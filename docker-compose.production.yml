@@ -15,7 +15,6 @@ services:
     volumes:
       - .:/app
     depends_on:
-      - db
       - redis
     env_file:
       - environment.env

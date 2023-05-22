@@ -7,6 +7,7 @@
 # Ignore bundler config.
 /.bundle
 .Ds_Store
+.idea
 
 # Ignore all logfiles and tempfiles.
 /log/*

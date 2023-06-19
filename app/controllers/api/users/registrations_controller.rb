@@ -16,11 +16,11 @@ module Api
                 upload_avatar
                 sign_up(resource_name, resource)
                 render json: { message: 'تم انشاء الحساب بنجاح' }, status: :created
-              else
-                clean_up_passwords resource
-                set_minimum_password_length
-                render json: { message: 'تم انشاء الحساب بنجاح' }, status: :created
               end
+            else
+              clean_up_passwords resource
+              set_minimum_password_length
+              render json: { message: resource.errors.messages }, status: :unprocessable_entity
             end
             rescue StandardError
               render json: { message: resource.errors.messages }, status: :unprocessable_entity

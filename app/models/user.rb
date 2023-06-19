@@ -12,6 +12,9 @@ class User < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_many :likes
 
+  has_one :avatar, dependent: :destroy
+  accepts_nested_attributes_for :avatar
+
   before_create :generate_token
 
   enum role: { user: 0, publisher: 1, admin: 2 }, _default: :user

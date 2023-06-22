@@ -61,6 +61,8 @@ module Api
       def upload_avatar
         if params[:user][:avatar].present?
           response = ImgurUploader.upload(params[:user][:avatar].tempfile.path)
+          raise StandardError, 'خطأ في تحميل الصورة' unless response['success'] == true
+
           avatar_id = response["data"]["id"]
           avatar_type = response["data"]["type"]
           avatar_url = response["data"]["link"]

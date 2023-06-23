@@ -1,20 +1,12 @@
 version: "3"
 
 services:
-  db:
-    image: postgres:13.1
-    env_file:
-      - environment.env
-    restart: always
-    healthcheck:
-      test: "exit 0"
-    volumes:
-      - postgres:/var/lib/postgresql
-  
   redis:
     image: redis:6.0
     restart: always
-
+    networks:
+      sharednetwork:
+      
   backend: 
     build: .
     entrypoint: /app/entrypoint.sh
@@ -23,12 +15,18 @@ services:
     volumes:
       - .:/app
     depends_on:
-      - db
       - redis
     env_file:
       - environment.env
+    networks:
+      sharednetwork:
     restart: always
 
 volumes:
   postgres:
   bundle_path:
+
+networks:
+  sharednetwork:
+    name: "sharednet"
+

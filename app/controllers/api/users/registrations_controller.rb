@@ -3,54 +3,71 @@
 module Api
   module Users
     class RegistrationsController < Devise::RegistrationsController
-      before_action :configure_sign_up_params, only: [:create]
-      # before_action :configure_account_update_params, only: [:update]
 
-      # GET /resource/edit
-      # def edit
-      #   super
-      # end
+      def create
+        ActiveRecord::Base.transaction do
+          build_resource(user_params)
+          resource_saved = resource.save
+          yield resource if block_given?
 
-      # PUT /resource
-      # def update
-      #   super
-      # end
-
-      # DELETE /resource
-      # def destroy
-      #   super
-      # end
-
-      # GET /resource/cancel
-      # Forces the session data which is usually expired after sign
-      # in to be expired now. This is useful if the user wants to
-      # cancel oauth signing in/up in the middle of the process,
-      # removing all OAuth session data.
-      # def cancel
-      #   super
-      # end
-
-      # protected
-
-      # If you have extra params to permit, append them to the sanitizer.
-      def configure_sign_up_params
-        devise_parameter_sanitizer.permit(:sign_up, keys: %i[email mobile name password])
+          begin
+            if resource_saved
+              if resource.active_for_authentication?
+                upload_avatar
+                sign_up(resource_name, resource)
+                render json: { message: 'تم انشاء الحساب بنجاح' }, status: :created
+              end
+            else
+              clean_up_passwords resource
+              set_minimum_password_length
+              render json: { message: resource.errors.messages }, status: :unprocessable_entity
+            end
+            rescue StandardError
+              render json: { message: resource.errors.messages }, status: :unprocessable_entity
+              raise ActiveRecord::Rollback
+            end
+        end
       end
 
-      # If you have extra params to permit, append them to the sanitizer.
-      # def configure_account_update_params
-      #   devise_parameter_sanitizer.permit(:account_update, keys: [:attribute])
-      # end
 
-      # The path used after sign up.
-      # def after_sign_up_path_for(resource)
-      #   super(resource)
-      # end
+      def update
+        ActiveRecord::Base.transaction do
+          resource_updated = resource.update_without_password(user_params)
+          yield resource if block_given?
 
-      # The path used after sign up for inactive accounts.
-      # def after_inactive_sign_up_path_for(resource)
-      #   super(resource)
-      # end
+          begin
+            if resource_updated
+              upload_avatar
+              bypass_sign_in resource, scope: resource_name
+              render json: { message: 'تم تحديث الحساب بنجاح' }, status: :ok
+            else
+              clean_up_passwords resource
+              set_minimum_password_length
+              render json: { message: resource.errors.messages }, status: :unprocessable_entity
+            end
+          rescue StandardError
+            render json: { message: resource.errors.messages }, status: :unprocessable_entity
+            raise ActiveRecord::Rollback
+          end
+        end
+      end
+
+      private
+
+      def user_params
+        params.require(:user).permit(:name, :email, :mobile, :password, :password_confirmation)
+      end
+
+      def upload_avatar
+        if params[:user][:avatar].present?
+          response = ImgurUploader.upload(params[:user][:avatar].tempfile.path)
+          avatar_id = response["data"]["id"]
+          avatar_type = response["data"]["type"]
+          avatar_url = response["data"]["link"]
+          avatar_repo = AvatarRepo.new(resource, response, avatar_id, avatar_type, avatar_url)
+          avatar_repo.create_avatar
+        end
+      end
     end
   end
 end

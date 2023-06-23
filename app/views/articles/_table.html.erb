@@ -4,6 +4,7 @@
       <th scope="col">#</th>
       <th scope="col">Description</th>
       <th scope="col">Status</th>
+      <th scope="col">Image</th>
       <th scope="col">User</th>
       <th scope="col">Actions</th>
     </tr>
@@ -14,6 +15,13 @@
         <td><%= article.id %></td>
         <td><%= article.description %></td>
         <td> <%= status(article.status) %> </td>
+        <td> 
+        <% unless article.attachments.nil? %>
+          <% article.attachments.each do |attachment| %>
+            <%= image_tag attachment.resource_url, class: "rounded", style: "width: 250px; height: 200px; object-fit: cover;", loading: "lazy" %>
+          <% end %>
+        <% end %>
+        </td>
         <td> <%= article.user&.display %> </td>
         <td>
           <%= button_to 'Edit', edit_article_path(article), class: "btn btn-outline-success", method: :get, data: {conarticle: "Are you sure?"} %>

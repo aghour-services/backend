@@ -35,19 +35,11 @@ module Api
 
         begin
           if @resource.save!
-            if params[:article][:attachment].present?
-              response = ImgurUploader.upload(params[:article][:attachment].tempfile.path)
-              raise StandardError, 'خطأ في تحميل الصورة' unless response['success'] == true
-
-              resource_id = response['data']['id']
-              resource_type = response['data']['type']
-              attachment = AttachmentRepo.new(@resource, response, resource_id, resource_type)
-              attachment.create_attachment
-            end
+            upload_image
             render :create, status: :created
           end
         rescue StandardError
-          render json: { errors: @resource.errors }, status: :unprocessable_entity
+          render json: { errors: @resource.errors.messages }, status: :unprocessable_entity
           raise ActiveRecord::Rollback
         end
       end
@@ -57,6 +49,9 @@ module Api
       return unauthorized_user unless user_ability.can_update?
 
       if @resource.update(article_params)
+        @resource.attachments.destroy_all
+        @resource.status = :published if user_ability.can_publish?
+        upload_image
         render :update, status: :ok
       else
         render json: { error: @resource.errors.messages }, status: :unprocessable_entity
@@ -83,6 +78,18 @@ module Api
 
     def article_params
       params.require(:article).permit(:description, :status)
+    end
+
+    def upload_image
+      if params[:article][:attachment].present?
+        response = ImgurUploader.upload(params[:article][:attachment].tempfile.path)
+        raise StandardError, 'خطأ في تحميل الصورة' unless response['success'] == true
+
+        resource_id = response['data']['id']
+        resource_type = response['data']['type']
+        attachment = AttachmentRepo.new(@resource, response, resource_id, resource_type)
+        attachment.create_attachment
+      end
     end
   end
 end

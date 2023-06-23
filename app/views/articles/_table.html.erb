@@ -2,6 +2,7 @@
   <thead>
     <tr>
       <th scope="col">#</th>
+      <th scope="col">Attachment</th>
       <th scope="col">Description</th>
       <th scope="col">Status</th>
       <th scope="col">Image</th>
@@ -13,6 +14,13 @@
     <% @articles.each do |article| %>
       <tr>
         <td><%= article.id %></td>
+        <td>
+          <% unless article.attachments.nil? %>
+          <% article.attachments.each do |attachment| %>
+            <%= image_tag attachment.resource_url, class: "rounded", style: "width: 120; height: 120; object-fit: cover;" %>
+          <% end %>
+        <% end %>
+        </td>
         <td><%= article.description %></td>
         <td> <%= status(article.status) %> </td>
         <td> 

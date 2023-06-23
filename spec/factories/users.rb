@@ -16,4 +16,8 @@ FactoryBot.define do
   trait :admin do
     role { :admin }
   end
+
+  trait :with_avatar do
+    avatar { create(:avatar, :with_user) }
+  end
 end

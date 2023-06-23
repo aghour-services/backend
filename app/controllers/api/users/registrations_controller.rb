@@ -3,7 +3,6 @@
 module Api
   module Users
     class RegistrationsController < Devise::RegistrationsController
-
       def create
         ActiveRecord::Base.transaction do
           build_resource(user_params)
@@ -22,13 +21,12 @@ module Api
               set_minimum_password_length
               render json: { message: resource.errors.messages }, status: :unprocessable_entity
             end
-            rescue StandardError
-              render json: { message: resource.errors.messages }, status: :unprocessable_entity
-              raise ActiveRecord::Rollback
-            end
+          rescue StandardError
+            render json: { message: resource.errors.messages }, status: :unprocessable_entity
+            raise ActiveRecord::Rollback
+          end
         end
       end
-
 
       def update
         ActiveRecord::Base.transaction do
@@ -61,9 +59,11 @@ module Api
       def upload_avatar
         if params[:user][:avatar].present?
           response = ImgurUploader.upload(params[:user][:avatar].tempfile.path)
-          avatar_id = response["data"]["id"]
-          avatar_type = response["data"]["type"]
-          avatar_url = response["data"]["link"]
+          raise StandardError, 'خطأ في تحميل الصورة' unless response['success'] == true
+
+          avatar_id = response['data']['id']
+          avatar_type = response['data']['type']
+          avatar_url = response['data']['link']
           avatar_repo = AvatarRepo.new(resource, response, avatar_id, avatar_type, avatar_url)
           avatar_repo.create_avatar
         end

@@ -72,9 +72,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_19_162707) do
   end
 
   create_table "avatars", force: :cascade do |t|
-    t.string "avatar_id"
-    t.string "avatar_type"
-    t.string "avatar_url"
+    t.string "resource_id"
+    t.string "resource_type"
+    t.string "url"
     t.text "raw_response"
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false

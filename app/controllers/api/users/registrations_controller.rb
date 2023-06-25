@@ -61,10 +61,10 @@ module Api
           response = ImgurUploader.upload(params[:user][:avatar].tempfile.path)
           raise StandardError, 'خطأ في تحميل الصورة' unless response['success'] == true
 
-          avatar_id = response['data']['id']
-          avatar_type = response['data']['type']
-          avatar_url = response['data']['link']
-          avatar_repo = AvatarRepo.new(resource, response, avatar_id, avatar_type, avatar_url)
+          resource_id = response['data']['id']
+          resource_type = response['data']['type']
+          url = response['data']['link']
+          avatar_repo = AvatarRepo.new(resource, response, resource_id, resource_type, url)
           avatar_repo.create_avatar
         end
       end

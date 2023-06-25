@@ -1,18 +1,18 @@
 class AvatarRepo
-    def initialize(resource, raw_response, avatar_id, avatar_type, avatar_url)
+    def initialize(resource, raw_response, resource_id, resource_type, url)
         @resource = resource
         @raw_response = raw_response
-        @avatar_id = avatar_id
-        @avatar_type = avatar_type
-        @avatar_url = avatar_url
+        @resource_type = resource_type
+        @resource_type = resource_type
+        @url = url
     end
 
     def create_avatar
         avatar = @resource.build_avatar(
             raw_response: @raw_response,
-            avatar_id: @avatar_id,
-            avatar_type: @avatar_type,
-            avatar_url: @avatar_url
+            resource_id: @resource_id,
+            resource_type: @resource_type,
+            url: @url
         )
         avatar.save
     end

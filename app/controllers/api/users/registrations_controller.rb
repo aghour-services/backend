@@ -28,28 +28,6 @@ module Api
         end
       end
 
-      def update
-        ActiveRecord::Base.transaction do
-          resource_updated = resource.update_without_password(user_params)
-          yield resource if block_given?
-
-          begin
-            if resource_updated
-              upload_avatar
-              bypass_sign_in resource, scope: resource_name
-              render json: { message: 'تم تحديث الحساب بنجاح' }, status: :ok
-            else
-              clean_up_passwords resource
-              set_minimum_password_length
-              render json: { message: resource.errors.messages }, status: :unprocessable_entity
-            end
-          rescue StandardError
-            render json: { message: resource.errors.messages }, status: :unprocessable_entity
-            raise ActiveRecord::Rollback
-          end
-        end
-      end
-
       private
 
       def user_params
@@ -65,7 +43,7 @@ module Api
           resource_type = response['data']['type']
           url = response['data']['link']
           avatar_repo = AvatarRepo.new(resource, response, resource_id, resource_type, url)
-          avatar_repo.create_avatar
+          avatar_repo.create
         end
       end
     end

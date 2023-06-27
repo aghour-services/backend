@@ -65,7 +65,7 @@ module Api
           resource_type = response['data']['type']
           url = response['data']['link']
           avatar_repo = AvatarRepo.new(resource, response, resource_id, resource_type, url)
-          avatar_repo.create_avatar
+          avatar_repo.create
         end
       end
     end

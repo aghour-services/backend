@@ -1,4 +1,4 @@
-RSpec.describe 'FirmsController', type: :request do
+RSpec.describe 'UsersController', type: :request do
   let(:user) { create(:user, name: "old name") }
 
     describe '#create' do

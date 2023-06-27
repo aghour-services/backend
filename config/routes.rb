@@ -15,17 +15,17 @@ Rails.application.routes.draw do
     namespace :api do
       resources :devices, only: %I[create]
       devise_scope :user do
-        get "/users/profile" => "users#profile"
+        get '/users/profile' => 'users#profile'
+        put '/users' => 'users#update'
       end
 
-      get "/articles/draft" => "articles#draft"
+      get '/articles/draft' => 'articles#draft'
       resources :articles, only: %I[index create show update destroy] do
         resources :comments, only: %I[index create update destroy]
         resource :likes, only: %I[create] do
           get :index
           delete :unlike
         end
-
       end
       resources :search, only: %I[index]
       resources :firms
@@ -35,9 +35,9 @@ Rails.application.routes.draw do
     end
     scope :api do
       devise_for :users, controllers: {
-                           sessions: "api/users/sessions",
-                           registrations: "api/users/registrations",
-                         }
+        sessions: 'api/users/sessions',
+        registrations: 'api/users/registrations'
+      }
     end
   end
 end

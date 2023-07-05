@@ -6,7 +6,7 @@ class AttachmentRepo
         @resource_type = resource_type
     end
 
-    def create_attachment
+    def create
         attachment = @article.attachments.create(
             raw_response: @raw_response, 
             resource_id: @resource_id, 

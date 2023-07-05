@@ -6,7 +6,7 @@ RSpec.describe AttachmentRepo, type: :repo do
   describe "#create_attachment" do
     it "creates a new attachment and returns its resource URL" do
       expect {
-        attachment_repo.create_attachment
+        attachment_repo.create
       }.to change { article.attachments.count }.by(1)
 
       last_attachment = article.attachments.last

@@ -46,15 +46,21 @@ module Api
     end
 
     def update
-      return unauthorized_user unless user_ability.can_update?
+      ActiveRecord::Base.transaction do
+        return unauthorized_user unless user_ability.can_update?
 
-      if @resource.update(article_params)
-        @resource.attachments.destroy_all
-        @resource.status = :published if user_ability.can_publish?
-        upload_image
-        render :update, status: :ok
-      else
-        render json: { error: @resource.errors.messages }, status: :unprocessable_entity
+        begin
+          if @resource.update(article_params)
+            @resource.status = :published if user_ability.can_publish?
+            upload_image
+            render :update, status: :ok
+          else
+            render json: { error: @resource.errors.messages }, status: :unprocessable_entity
+          end
+        rescue StandardError
+          render json: { errors: @resource.errors.messages }, status: :unprocessable_entity
+          raise ActiveRecord::Rollback
+        end
       end
     end
 
@@ -88,7 +94,8 @@ module Api
         resource_id = response['data']['id']
         resource_type = response['data']['type']
         attachment = AttachmentRepo.new(@resource, response, resource_id, resource_type)
-        attachment.create_attachment
+        @resource.attachments.destroy_all
+        attachment.create
       end
     end
   end

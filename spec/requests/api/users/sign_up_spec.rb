@@ -5,13 +5,24 @@ RSpec.describe 'Api::Users::RegistrationsController', type: :request do
     let(:imgur_response) do
       '{"data":{"id":"3O9qUDG", "type":"image/png"}, "success": true}'
     end
-    let(:valid_params) do
+    let(:request_body) do
       {
+        name: 'UserName',
         email: 'user@example.com',
         mobile: '0123412312',
-        name: 'UserName',
         password: 'password',
         avatar:
+      }
+    end
+
+    let(:response_body) do
+      {
+        id: 2,
+        name: 'UserName',
+        email: 'user@example.com',
+        mobile: '0123412312',
+        url: nil,
+        verified: false
       }
     end
 
@@ -24,13 +35,13 @@ RSpec.describe 'Api::Users::RegistrationsController', type: :request do
     context 'with valid params' do
       it 'creates a new user' do
         expect do
-          post '/api/users', params: { user: valid_params }
+          post '/api/users', params: { user: request_body }
         end.to change { User.count }.by(1)
-      end
+        recent_user = User.last
 
-      it 'returns a 201 status code' do
-        post '/api/users', params: { user: valid_params }
         expect(response).to have_http_status(201)
+        expected_response = response_body.merge(id: recent_user.id)
+        expect(response.body).to eq(expected_response.to_json)
       end
     end
 
@@ -68,7 +79,7 @@ RSpec.describe 'Api::Users::RegistrationsController', type: :request do
 
       it 'does not create a new user (Rollback)' do
         expect do
-          post '/api/users', params: { user: valid_params }
+          post '/api/users', params: { user: request_body }
         end.to change { User.count }.by(0)
         change { User.count }.by(0)
 

@@ -6,15 +6,15 @@ module Api
       def create
         ActiveRecord::Base.transaction do
           build_resource(user_params)
-          resource_saved = resource.save
+          saved = resource.save
           yield resource if block_given?
 
           begin
-            if resource_saved
+            if saved
               if resource.active_for_authentication?
                 upload_avatar
                 sign_up(resource_name, resource)
-                render json: { message: 'تم انشاء الحساب بنجاح' }, status: :created
+                render 'api/users/create', status: :created
               end
             else
               clean_up_passwords resource

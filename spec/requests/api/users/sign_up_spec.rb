@@ -1,4 +1,4 @@
-RSpec.describe 'Api::Users::RegistrationsController', type: :request do
+RSpec.fdescribe 'Api::Users::RegistrationsController', type: :request do
   describe '#sign_up' do
     let(:avatar) { fixture_file_upload('spec/fixture_files/1.jpeg', 'image/png') }
 
@@ -22,7 +22,8 @@ RSpec.describe 'Api::Users::RegistrationsController', type: :request do
         email: 'user@example.com',
         mobile: '0123412312',
         url: nil,
-        verified: false
+        verified: false,
+        token: 'token'
       }
     end
 
@@ -40,7 +41,7 @@ RSpec.describe 'Api::Users::RegistrationsController', type: :request do
         recent_user = User.last
 
         expect(response).to have_http_status(201)
-        expected_response = response_body.merge(id: recent_user.id)
+        expected_response = response_body.merge(id: recent_user.id, token: recent_user.token)
         expect(response.body).to eq(expected_response.to_json)
       end
     end

@@ -16,6 +16,7 @@ Rails.application.routes.draw do
       resources :devices, only: %I[create]
       devise_scope :user do
         get '/users/profile' => 'users#profile'
+        get '/users/:id' => 'users#show'
         put '/users' => 'users#update'
       end
 

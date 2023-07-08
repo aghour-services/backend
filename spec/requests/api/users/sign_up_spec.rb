@@ -1,4 +1,4 @@
-RSpec.fdescribe 'Api::Users::RegistrationsController', type: :request do
+RSpec.describe 'Api::Users::RegistrationsController', type: :request do
   describe '#sign_up' do
     let(:avatar) { fixture_file_upload('spec/fixture_files/1.jpeg', 'image/png') }
 

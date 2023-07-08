@@ -46,5 +46,20 @@ RSpec.describe 'Api::UsersController', type: :request do
         end.not_to change { user.reload.name }
       end
     end
+
+    context 'when imgur response is false' do
+      let!(:imgur_response) do
+        '{"data":{"id":"3O9qUDG", "type":"image/png"}, "success": false}'
+      end
+
+      it 'does not update a user (Rollback)' do
+        expect do
+          user_params = user.attributes.symbolize_keys
+          put '/api/users', params: { user: user_params.merge(avatar: avatar) }, headers: headers
+        end.not_to change { User.count }
+
+        expect(response).to have_http_status(422)
+      end
+    end
   end
 end

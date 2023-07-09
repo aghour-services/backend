@@ -4,10 +4,8 @@ services:
   redis:
     image: redis:6.0
     restart: always
-    networks:
-      sharednetwork:
-      
-  backend: 
+
+  backend:
     build: .
     entrypoint: /app/entrypoint.sh
     ports:
@@ -18,15 +16,14 @@ services:
       - redis
     env_file:
       - environment.env
-    networks:
-      sharednetwork:
     restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
 
 volumes:
   postgres:
   bundle_path:
 
-networks:
-  sharednetwork:
-    name: "sharednet"
+
 

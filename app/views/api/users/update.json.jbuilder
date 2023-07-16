@@ -1,1 +1,1 @@
-json.partial! partial: '/api/users/user', user: current_user
+json.partial! partial: 'user', user: current_user

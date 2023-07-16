@@ -4,3 +4,4 @@ json.email user.email
 json.mobile user.mobile
 json.url user.avatar.try(:url)
 json.verified user.verified?
+json.token user.token

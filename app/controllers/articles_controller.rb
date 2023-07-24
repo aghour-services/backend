@@ -4,7 +4,7 @@ class ArticlesController < HtmlController
   before_action :fetch_article, only: %I[show update edit destroy]
 
   def index
-    @articles = Article.order(id: :desc).first(200)
+    @articles = Article.order(id: :desc).includes(:attachments).first(200)
   end
 
   def edit; end

@@ -6,7 +6,7 @@ class UsersController < HtmlController
   before_action :fetch_user, only: %I[edit update destroy]
 
   def index
-    @users = User.all.order(id: :desc)
+    @users = User.all.includes(:avatar).order(id: :desc)
   end
 
   def edit; end
@@ -14,7 +14,6 @@ class UsersController < HtmlController
   def destroy
     redirect_to users_path, alert: 'Deleted User' if @user.destroy
   end
-
 
   def update
     @user.update(user_params)

@@ -17,14 +17,14 @@ module Api
       #   render json: @cached_response
       #   return
       # end
-      @articles = Article.includes(:user, :comments, :likes).published.order(id: :desc).first(50)
+      @articles = Article.includes(:comments, :likes, :attachments, user: :avatar).published.order(id: :desc).first(50)
       @current_user = current_user
     end
 
     def show; end
 
     def draft
-      @articles = Article.includes(:user, :comments, :likes).draft.order(id: :desc)
+      @articles = Article.includes(:comments, :likes, :attachments, user: :avatar).draft.order(id: :desc)
       @current_user = current_user
     end
 

@@ -3,6 +3,8 @@
 module Api
   module Users
     class RegistrationsController < Devise::RegistrationsController
+      include Attachable
+      
       def create
         ActiveRecord::Base.transaction do
           build_resource(user_params)
@@ -12,7 +14,7 @@ module Api
           begin
             if saved
               if resource.active_for_authentication?
-                upload_avatar
+                upload_avatar(params, resource)
                 sign_up(resource_name, resource)
                 render 'api/users/create', status: :created
               end
@@ -32,19 +34,6 @@ module Api
 
       def user_params
         params.require(:user).permit(:name, :email, :mobile, :password, :password_confirmation)
-      end
-
-      def upload_avatar
-        if params[:user][:avatar].present?
-          response = ImgurUploader.upload(params[:user][:avatar].tempfile.path)
-          raise StandardError, 'خطأ في تحميل الصورة' unless response['success'] == true
-
-          resource_id = response['data']['id']
-          resource_type = response['data']['type']
-          url = response['data']['link']
-          avatar_repo = AvatarRepo.new(resource, response, resource_id, resource_type, url)
-          avatar_repo.create
-        end
       end
     end
   end

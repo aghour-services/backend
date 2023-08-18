@@ -2,6 +2,8 @@ class Api::UsersController < ApiController
   before_action :authenticate_user!, only: %i[profile update]
   before_action :fetch_user, only: %i[show]
 
+  include Attachable
+
   def profile; end
 
   def show; end
@@ -9,7 +11,7 @@ class Api::UsersController < ApiController
   def update
     ActiveRecord::Base.transaction do
       if current_user.update(user_params)
-        upload_avatar
+        upload_avatar(params, current_user)
         render :update, status: :ok
       end
     rescue StandardError
@@ -26,18 +28,5 @@ class Api::UsersController < ApiController
 
   def user_params
     params.require(:user).permit(:name, :email, :mobile, :password, :password_confirmation)
-  end
-
-  def upload_avatar
-    if params[:user][:avatar].present?
-      response = ImgurUploader.upload(params[:user][:avatar].tempfile.path)
-      raise StandardError, 'خطأ في تحميل الصورة' unless response['success'] == true
-
-      resource_id = response['data']['id']
-      resource_type = response['data']['type']
-      url = response['data']['link']
-      avatar_repo = AvatarRepo.new(current_user, response, resource_id, resource_type, url)
-      avatar_repo.create
-    end
   end
 end

@@ -9,6 +9,8 @@ module Api
     before_action :user_ability, only: %i[create update destroy show]
     before_action :find_article, only: %i[update destroy show]
 
+    include Attachable
+
     # after_action :cache_response, only: [:index]
     # before_action :check_cached, only: [:index]
 
@@ -35,11 +37,13 @@ module Api
 
         begin
           if @resource.save!
-            upload_image
+            upload_article_attachment(params, @resource)
             render :create, status: :created
+          else
+            render json: { error: @resource.errors.full_messages }, status: :unprocessable_entity
           end
-        rescue StandardError
-          render json: { errors: @resource.errors.messages }, status: :unprocessable_entity
+        rescue StandardError => e
+          render json: { error: e.message }, status: :unprocessable_entity
           raise ActiveRecord::Rollback
         end
       end
@@ -48,17 +52,17 @@ module Api
     def update
       ActiveRecord::Base.transaction do
         return unauthorized_user unless user_ability.can_update?
+        @resource.status = :published if user_ability.can_publish?
 
         begin
           if @resource.update(article_params)
-            @resource.status = :published if user_ability.can_publish?
-            upload_image
+            upload_article_attachment(params, @resource)
             render :update, status: :ok
           else
-            render json: { error: @resource.errors.messages }, status: :unprocessable_entity
+            render json: { error: @resource.errors.full_messages }, status: :unprocessable_entity
           end
-        rescue StandardError
-          render json: { errors: @resource.errors.messages }, status: :unprocessable_entity
+        rescue StandardError => e
+          render json: { error: e.message }, status: :unprocessable_entity
           raise ActiveRecord::Rollback
         end
       end
@@ -84,19 +88,6 @@ module Api
 
     def article_params
       params.require(:article).permit(:description, :status)
-    end
-
-    def upload_image
-      if params[:article][:attachment].present?
-        response = ImgurUploader.upload(params[:article][:attachment].tempfile.path)
-        raise StandardError, 'خطأ في تحميل الصورة' unless response['success'] == true
-
-        resource_id = response['data']['id']
-        resource_type = response['data']['type']
-        attachment = AttachmentRepo.new(@resource, response, resource_id, resource_type)
-        @resource.attachments.destroy_all
-        attachment.create
-      end
     end
   end
 end

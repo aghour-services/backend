@@ -5,6 +5,7 @@ class Firm < ApplicationRecord
 
   belongs_to :category
   belongs_to :user, optional: true
+  has_many :ratings, dependent: :destroy
   enum status: { draft: 0, published: 1 }, _default: :draft
 
   scope :filter_by, ->(tags) { search_by_tags(tags.split(',')) if tags.present? }

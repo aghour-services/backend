@@ -29,7 +29,9 @@ Rails.application.routes.draw do
         end
       end
       resources :search, only: %I[index]
-      resources :firms
+      resources :firms do 
+        resources :ratings, only: %I[create]
+      end
       resources :categories do
         get :tags
       end

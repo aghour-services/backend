@@ -9,6 +9,3 @@ json.email firm.email
 json.fb_page firm.fb_page
 json.category_id firm.category_id
 json.category_name firm.category.name
-json.ratings firm.ratings do |rating|
-    json.partial! partial: '/api/ratings/rating', rating: rating
-end

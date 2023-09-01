@@ -173,7 +173,7 @@ GEM
       net-protocol
     netrc (0.11.0)
     newrelic_rpm (9.0.0)
-    nio4r (2.5.8)
+    nio4r (2.5.9)
     nokogiri (1.14.3-aarch64-linux)
       racc (~> 1.4)
     nokogiri (1.14.3-arm64-darwin)
@@ -190,7 +190,7 @@ GEM
       activerecord (>= 5.2)
       activesupport (>= 5.2)
     public_suffix (5.0.1)
-    puma (5.6.5)
+    puma (5.6.7)
       nio4r (~> 2.0)
     racc (1.6.2)
     rack (2.2.6.4)

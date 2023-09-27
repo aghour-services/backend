@@ -12,7 +12,7 @@ logs:
 	docker-compose logs -f backend
 
 deploy:
-	docker-compose -f docker-compose.production.yml up -d
+	docker-compose up -d
 
 console:
 	docker-compose exec backend rails console

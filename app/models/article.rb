@@ -30,7 +30,7 @@ class Article < ApplicationRecord
   def send_notification
     return unless published?
 
-    ArticleNotificationService.new(notification_payload).send
+    ArticleNotification.new(notification_payload).send
   end
 
   def notification_payload

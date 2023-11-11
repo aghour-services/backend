@@ -15,7 +15,7 @@ class Article < ApplicationRecord
   accepts_nested_attributes_for :attachments
 
   enum status: { draft: 0, published: 1 }, _default: :draft
-  after_create :send_notification, :clear_cache
+  after_save_commit :send_notification, :clear_cache
 
   def liked?(current_user)
     return false unless current_user
@@ -30,7 +30,17 @@ class Article < ApplicationRecord
   def send_notification
     return unless published?
 
-    NotificationService.new(self).send
+    NotificationService.new(notification_payload).send
+  end
+
+  def notification_payload
+    message_title = 'آخر الأخبار'
+    {
+      'title' => message_title,
+      'body' => self.description.first(500),
+      'article_id' => self.id,
+      'image_url' => self.attachments&.first&.resource_url,
+    }
   end
 
   def clear_cache

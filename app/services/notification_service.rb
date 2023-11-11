@@ -1,38 +1,39 @@
 # frozen_string_literal: true
 
 class NotificationService
-  def initialize(article)
-    @article = article
+  attr_reader :data
 
-    @topic = "News-v2-#{Rails.env}"
-    @topic = 'News-v2' if Rails.env == 'production'
+  def initialize(data)
+    @data = data
+  
+    @topic = "News-v1"
   end
 
   def send
-    return unless Rails.env == 'production'
+    # return unless Rails.env.production?
 
-    fcm = FCM.new(
-      'AIzaSyDuqo8CAeue4IVAdhGwJtdofArV_mzxdV4',
-      'aghour-app-firebase.json',
-      'aghour-app'
-    )
-
-    fcm.send_v1(message)
+    fcm = FCM.new(Rails.application.credentials.fcm_server_key)
+    options = construct_notification_from_params(data)
+    
+    fcm.send_to_topic(@topic, options)
   end
 
   private
 
-  def message
-    # we can replace topic by token 'token': ''
-    message_title = 'أخبار أجهور الكبرى'
+  def construct_notification_from_params(data)
+    new_data = data.merge!(create_data_object(data))
     {
-      topic: @topic,
-      data: { payload: { data: { id: @article.id } }.to_json },
-      notification: { title: message_title,
-                      body: @article.description.first(500) },
-      android: {},
-      apns: { payload: { aps: { sound: 'default', category: Time.zone.now.to_i.to_s } } },
-      fcm_options: { analytics_label: 'notification_from_backend' }
+      'notification' => new_data,
+      'data' => new_data,
+      'priority' => 'high',
+      'contentAvailable' => true
+    }
+  end
+
+  def create_data_object(_data)
+    {
+      'time' => Time.now.to_i,
+      'sound' => 'default',
     }
   end
 end

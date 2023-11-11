@@ -12,6 +12,7 @@ class Article < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :attachments, dependent: :destroy
+  has_many :notifications, as: :notifiable, dependent: :destroy
   accepts_nested_attributes_for :attachments
 
   enum status: { draft: 0, published: 1 }, _default: :draft

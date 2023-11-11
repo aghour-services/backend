@@ -15,7 +15,7 @@ RSpec.describe NotificationService do
 
     it 'sends a notification to the News-v2 topic' do
       expect(fcm).to receive(:send_to_topic).with('News-v2', notification)
-      NotificationService.new(data).send
+      NotificationService.new(data).send_to_all
     end
 
     context 'when not in production environment' do
@@ -25,7 +25,7 @@ RSpec.describe NotificationService do
 
       it 'does not send a notification' do
         expect(fcm).not_to receive(:send_to_topic)
-        NotificationService.new(data).send
+        NotificationService.new(data).send_to_all
       end
     end
   end

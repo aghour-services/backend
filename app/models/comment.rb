@@ -13,23 +13,32 @@ class Comment < ApplicationRecord
   end
 
   def send_notification
-    NotificationService.new(notification_payload, interested_tokens).send_to_custom
+    NotificationService.new(notification_payload).send_to_custom(interested_tokens)
   end
 
   def interested_tokens
-    # Need more handle
-    # user article owner and user article liked and user article comment in one array
     tokens = []
-    tokens << article.user.devices.pluck(:token)
-    tokens << article.likes.pluck(:user_id)
-    tokens << article.comments.pluck(:user_id)
-    tokens.flatten.uniq
+
+    # get article owner
+    article_owner = article&.user&.devices&.last&.token
+    
+    # # get all users who commented on this article 
+    users = article&.comments&.map(&:user)&.uniq
+    devices = users&.map(&:devices)&.flatten
+    commented_users_tokens = devices&.map(&:token)
+
+    # # get all users who liked this article
+    users = article&.likes&.map(&:user)&.uniq
+    devices = users&.map(&:devices)&.flatten
+    liked_users_tokens = devices&.map(&:token)
+
+    tokens << article_owner << commented_users_tokens << liked_users_tokens
+    tokens.flatten.compact.uniq
   end
  
   def notification_payload
-    message_title = 'تعليق جديد'
     {
-      'title' => message_title,
+      'title' => 'تعليق جديد' + ' - ' + user.name,
       'body' => body.first(500),
       'comment_id' => id,
       'article_id' => article_id,

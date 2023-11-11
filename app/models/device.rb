@@ -3,6 +3,7 @@ require 'action_view/helpers'
 
 class Device < ApplicationRecord
   include ActionView::Helpers::DateHelper
+  belongs_to :user, optional: true
   validates :token, presence: true, uniqueness: true
 
   def time_ago

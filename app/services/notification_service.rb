@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-class ArticleNotification
+class NotificationService
   attr_reader :data
 
   def initialize(data)
     @data = data
   
-    @topic = "News-v2"
+    @topic = "News-v1"
   end
 
   def send
-    return unless Rails.env.production?
+    # return unless Rails.env.production?
 
     fcm = FCM.new(Rails.application.credentials.fcm_server_key)
     options = construct_notification_from_params(data)

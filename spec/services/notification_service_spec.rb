@@ -3,6 +3,7 @@
 RSpec.describe NotificationService do
   describe '#send' do
     let(:data) { { title: 'Test Article', body: 'This is a test article.' } }
+    let(:tokens) { ['test_token', 'test', 'token'] }
     let(:notification) { instance_double('Hash') }
     let(:fcm) { instance_double('FCM') }
 
@@ -13,9 +14,16 @@ RSpec.describe NotificationService do
       allow(FCM).to receive(:new).with('test_key').and_return(fcm)
     end
 
-    it 'sends a notification to the News-v2 topic' do
-      expect(fcm).to receive(:send_to_topic).with('News-v2', notification)
-      NotificationService.new(data).send
+    context 'when in production environment' do
+      it 'sends a notification to the News-v1 topic' do
+        expect(fcm).to receive(:send_to_topic).with('News-v1', notification)
+        NotificationService.new(data).send_to_all
+      end
+
+      it 'sends a notification to custom tokens' do
+        expect(fcm).to receive(:send).with(tokens, notification)
+        NotificationService.new(data).send_to_custom(tokens)
+      end
     end
 
     context 'when not in production environment' do
@@ -25,7 +33,12 @@ RSpec.describe NotificationService do
 
       it 'does not send a notification' do
         expect(fcm).not_to receive(:send_to_topic)
-        NotificationService.new(data).send
+        NotificationService.new(data).send_to_all
+      end
+
+      it 'does not send a notification to custom tokens' do
+        expect(fcm).not_to receive(:send)
+        NotificationService.new(data).send_to_custom(tokens)
       end
     end
   end

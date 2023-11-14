@@ -5,6 +5,8 @@ class Comment < ApplicationRecord
 
   belongs_to :user
   belongs_to :article
+  
+  has_many :notifications, as: :notifiable, dependent: :destroy
 
   after_create :send_notification
 

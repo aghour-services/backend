@@ -9,13 +9,22 @@ class NotificationService
     @topic = "News-v1"
   end
 
-  def send
-    # return unless Rails.env.production?
+  def send_to_all
+    return unless Rails.env.production?
 
     fcm = FCM.new(Rails.application.credentials.fcm_server_key)
     options = construct_notification_from_params(data)
     
     fcm.send_to_topic(@topic, options)
+  end
+
+  def send_to_custom(tokens)
+    return unless Rails.env.production?
+    
+    fcm = FCM.new(Rails.application.credentials.fcm_server_key)
+    options = construct_notification_from_params(data)
+    
+    fcm.send(tokens, options)
   end
 
   private

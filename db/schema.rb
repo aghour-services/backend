@@ -103,6 +103,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_11_181510) do
     t.datetime "last_usage_time", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_devices_on_user_id"
   end
 
   create_table "firms", force: :cascade do |t|
@@ -173,6 +175,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_11_181510) do
   add_foreign_key "avatars", "users"
   add_foreign_key "comments", "articles"
   add_foreign_key "comments", "users"
+  add_foreign_key "devices", "users"
   add_foreign_key "likes", "articles"
   add_foreign_key "likes", "users"
 end

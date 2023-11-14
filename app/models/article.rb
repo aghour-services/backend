@@ -31,13 +31,12 @@ class Article < ApplicationRecord
   def send_notification
     return unless published?
 
-    NotificationService.new(notification_payload).send
+    NotificationService.new(notification_payload).send_to_all
   end
 
   def notification_payload
-    message_title = 'آخر الأخبار'
     {
-      'title' => message_title,
+      'title' => 'خبر جديد' + ' - ' + user.name,
       'body' => self.description.first(500),
       'article_id' => self.id,
       'image_url' => self.attachments&.first&.resource_url,

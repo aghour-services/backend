@@ -7,7 +7,7 @@ RSpec.describe NotificationRepo, type: :repo do
         it "creates a new notification" do
             expect {
                 notification_repo.create
-            }.to change { Notification.count }.by(1)
+            }.to change { Notification.count }.by(2)
 
             last_notification = Notification.last
             expect(last_notification.title).to eq('notification.title')

@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   defaults format: :json do
     namespace :api do
       resources :devices, only: %I[create]
+      resources :notifications, only: %I[index]
       devise_scope :user do
         get '/users/profile' => 'users#profile'
         get '/users/:id' => 'users#show'

@@ -16,6 +16,7 @@ class Article < ApplicationRecord
   accepts_nested_attributes_for :attachments
 
   enum status: { draft: 0, published: 1 }, _default: :draft
+  after_create :create_notification_record
   after_save_commit :send_notification, :clear_cache
 
   def liked?(current_user)
@@ -41,6 +42,17 @@ class Article < ApplicationRecord
       'article_id' => self.id,
       'image_url' => self.attachments&.first&.resource_url,
     }
+  end
+
+  def create_notification_record
+    notification_repo = NotificationRepo.new(
+      self,
+      user,
+      'خبر جديد' + ' - ' + user.name,
+      description,
+      attachments&.first&.resource_url
+    )
+    notification_repo.create
   end
 
   def clear_cache

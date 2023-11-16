@@ -12,6 +12,7 @@ class User < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_many :likes
   has_many :devices, dependent: :destroy
+  has_many :notifications, dependent: :destroy
 
   has_one :avatar, dependent: :destroy
   accepts_nested_attributes_for :avatar

@@ -53,8 +53,8 @@ class Comment < ApplicationRecord
       self,
       user,
       'تعليق جديد' + ' - ' + user.name,
-      description,
-      attachments&.first&.resource_url
+      body,
+      nil
     )
     notification_repo.create
   end

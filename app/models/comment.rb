@@ -8,7 +8,7 @@ class Comment < ApplicationRecord
   
   has_many :notifications, as: :notifiable, dependent: :destroy
 
-  after_create :send_notification
+  after_create :send_notification, :create_notification_record
 
   def time_ago
     distance_of_time_in_words_to_now(created_at.to_datetime)
@@ -46,5 +46,16 @@ class Comment < ApplicationRecord
       'article_id' => article_id,
       'user_id' => user_id,
     }
+  end
+
+  def create_notification_record
+    notification_repo = NotificationRepo.new(
+      self,
+      user,
+      'تعليق جديد' + ' - ' + user.name,
+      description,
+      attachments&.first&.resource_url
+    )
+    notification_repo.create
   end
 end

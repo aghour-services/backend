@@ -2,6 +2,7 @@
   <thead>
     <tr>
       <th scope="col">ID</th>
+      <th scope="col">Username</th>
       <th scope="col">Token</th>
       <th scope="col">Last Time Usage</th>
     </tr>
@@ -10,6 +11,7 @@
     <% @devices.each do |device| %>
       <tr>
         <td><%= device.id %></td>
+        <td><%= device.user.name %></td>
         <td><%= device.token %></td>
         <td class="text-success"><%= device.time_ago %></td>
       </tr>

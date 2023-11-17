@@ -1,5 +1,5 @@
 RSpec.describe DevicesController, type: :controller do
-  let!(:devices) {create_list(:device, 220)}
+  let!(:devices) {create_list(:device, 220, :with_user)}
 
   describe '#index' do
       before do

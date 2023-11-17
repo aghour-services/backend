@@ -40,11 +40,13 @@ class Comment < ApplicationRecord
  
   def notification_payload
     {
-      'title' => 'تعليق جديد' + ' - ' + user.name,
+      'title' => "تم إضافة تعليق جديد بواسطة #{user.name}",
       'body' => body.first(500),
       'comment_id' => id,
       'article_id' => article_id,
       'user_id' => user_id,
+      'article_image' => article&.attachments&.first&.resource_url,
+      'user_avatar' => user&.avatar&.url || DEFAULT_USER_ICON
     }
   end
 
@@ -52,9 +54,9 @@ class Comment < ApplicationRecord
     notification_repo = NotificationRepo.new(
       self,
       user,
-      'تعليق جديد' + ' - ' + user.name,
+      "تم إضافة تعليق جديد بواسطة #{user.name}",
       body,
-      nil
+      article&.attachments&.first&.resource_url
     )
     notification_repo.create
   end

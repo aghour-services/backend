@@ -1,0 +1,1 @@
+DEFAULT_USER_ICON = 'https://i.imgur.com/cQXLuRL.png'

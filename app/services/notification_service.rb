@@ -6,7 +6,7 @@ class NotificationService
   def initialize(data)
     @data = data
   
-    @topic = "News-v1"
+    @topic = "News-v2"
   end
 
   def send_to_all

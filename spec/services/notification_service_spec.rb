@@ -16,7 +16,7 @@ RSpec.describe NotificationService do
 
     context 'when in production environment' do
       it 'sends a notification to the News-v1 topic' do
-        expect(fcm).to receive(:send_to_topic).with('News-v1', notification)
+        expect(fcm).to receive(:send_to_topic).with('News-v2', notification)
         NotificationService.new(data).send_to_all
       end
 

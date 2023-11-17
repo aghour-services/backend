@@ -52,10 +52,10 @@ module Api
     def update
       ActiveRecord::Base.transaction do
         return unauthorized_user unless user_ability.can_update?
-        @resource.status = :published if user_ability.can_publish?
 
         begin
-          if @resource.update(article_params)
+          if @resource.update!(article_params)
+            @resource.status = :published if user_ability.can_publish?
             upload_article_attachment(params, @resource)
             render :update, status: :ok
           else

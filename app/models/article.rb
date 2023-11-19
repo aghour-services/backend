@@ -37,10 +37,11 @@ class Article < ApplicationRecord
 
   def notification_payload
     {
-      'title' => 'خبر جديد' + ' - ' + user.name,
+      'title' => "خبر جديد بواسطة #{user.name}",
       'body' => self.description.first(500),
       'article_id' => self.id,
-      'image_url' => self.attachments&.first&.resource_url,
+      'article_image' => self.attachments&.first&.resource_url,
+      'user_avatar' => self.user&.avatar&.url || DEFAULT_USER_ICON
     }
   end
 
@@ -48,7 +49,7 @@ class Article < ApplicationRecord
     notification_repo = NotificationRepo.new(
       self,
       user,
-      'خبر جديد' + ' - ' + user.name,
+      "خبر جديد بواسطة #{user.name}",
       description,
       attachments&.first&.resource_url
     )

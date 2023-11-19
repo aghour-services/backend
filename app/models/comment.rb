@@ -21,6 +21,8 @@ class Comment < ApplicationRecord
   def interested_tokens
     tokens = []
 
+    user_comment_owner = user&.devices&.last&.token
+
     # get article owner
     article_owner = article&.user&.devices&.last&.token
     
@@ -35,16 +37,18 @@ class Comment < ApplicationRecord
     liked_users_tokens = devices&.map(&:token)
 
     tokens << article_owner << commented_users_tokens << liked_users_tokens
-    tokens.flatten.compact.uniq
+    tokens.flatten.reject { |token| token == user_comment_owner }.compact.uniq
   end
  
   def notification_payload
     {
-      'title' => 'تعليق جديد' + ' - ' + user.name,
+      'title' => "تعليق جديد بواسطة #{user.name}",
       'body' => body.first(500),
       'comment_id' => id,
       'article_id' => article_id,
       'user_id' => user_id,
+      'article_image' => article&.attachments&.first&.resource_url,
+      'user_avatar' => user&.avatar&.url || DEFAULT_USER_ICON
     }
   end
 
@@ -52,9 +56,9 @@ class Comment < ApplicationRecord
     notification_repo = NotificationRepo.new(
       self,
       user,
-      'تعليق جديد' + ' - ' + user.name,
+      "تعليق جديد بواسطة #{user.name}",
       body,
-      nil
+      article&.attachments&.first&.resource_url
     )
     notification_repo.create
   end

@@ -25,7 +25,7 @@ class Comment < ApplicationRecord
     article_owner = article&.user&.devices&.last&.token
     
     # # get all users who commented on this article 
-    users = article&.comments&.map(&:user)&.uniq
+    users = article&.comments&.map(&:user)&.reject { |u| u.id == user_id }&.uniq
     devices = users&.map(&:devices)&.flatten
     commented_users_tokens = devices&.map(&:token)
 
@@ -40,7 +40,7 @@ class Comment < ApplicationRecord
  
   def notification_payload
     {
-      'title' => "تم إضافة تعليق جديد بواسطة #{user.name}",
+      'title' => "تعليق جديد بواسطة #{user.name}",
       'body' => body.first(500),
       'comment_id' => id,
       'article_id' => article_id,
@@ -54,7 +54,7 @@ class Comment < ApplicationRecord
     notification_repo = NotificationRepo.new(
       self,
       user,
-      "تم إضافة تعليق جديد بواسطة #{user.name}",
+      "تعليق جديد بواسطة #{user.name}",
       body,
       article&.attachments&.first&.resource_url
     )

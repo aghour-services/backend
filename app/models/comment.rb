@@ -21,11 +21,13 @@ class Comment < ApplicationRecord
   def interested_tokens
     tokens = []
 
+    user_comment_owner = user&.devices&.last&.token
+
     # get article owner
     article_owner = article&.user&.devices&.last&.token
     
     # # get all users who commented on this article 
-    users = article&.comments&.map(&:user)&.reject { |u| u.id == user_id }&.uniq
+    users = article&.comments&.map(&:user)&.uniq
     devices = users&.map(&:devices)&.flatten
     commented_users_tokens = devices&.map(&:token)
 
@@ -35,7 +37,7 @@ class Comment < ApplicationRecord
     liked_users_tokens = devices&.map(&:token)
 
     tokens << article_owner << commented_users_tokens << liked_users_tokens
-    tokens.flatten.compact.uniq
+    tokens.flatten.reject { |token| token == user_comment_owner }.compact.uniq
   end
  
   def notification_payload

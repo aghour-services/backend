@@ -55,7 +55,6 @@ module Api
 
         begin
           if @resource.update!(article_params)
-            @resource.status = :published if user_ability.can_publish?
             upload_article_attachment(params, @resource)
             render :update, status: :ok
           else

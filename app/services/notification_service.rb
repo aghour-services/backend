@@ -42,7 +42,7 @@ class NotificationService
   def create_data_object(_data)
     {
       'time' => Time.now.to_i,
-      'sound' => 'default',
+      'sound' => 'default'
     }
   end
 end

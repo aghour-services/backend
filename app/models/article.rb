@@ -17,7 +17,7 @@ class Article < ApplicationRecord
 
   enum status: { draft: 0, published: 1 }, _default: :draft
   after_save_commit :send_notification, :clear_cache, if: :saved_change_to_status?
-  after_save_commit :create_notification_record, if: :published?
+  after_save_commit :create_notification_record, if: :saved_change_to_status?
 
   def liked?(current_user)
     return false unless current_user
@@ -37,7 +37,7 @@ class Article < ApplicationRecord
 
   def notification_payload
     {
-      'title' => "خبر جديد بواسطة #{user.name}",
+      'title' => "#{user.name} أضاف خبر جديد",
       'body' => self.description.first(500),
       'article_id' => self.id,
       'article_image' => self.attachments&.first&.resource_url,
@@ -51,7 +51,7 @@ class Article < ApplicationRecord
     notification_repo = NotificationRepo.new(
       self,
       user,
-      "خبر جديد بواسطة #{user.name}",
+      "#{user.name} أضاف خبر جديد",
       description,
       attachments&.first&.resource_url
     )

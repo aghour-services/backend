@@ -3,12 +3,12 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-gem 'rails', '~> 7.0'
+gem 'rails', '~> 7.1.0'
 
 gem 'pg', '~> 1.1'
 gem 'pg_search'
 
-gem 'puma', '~> 5.6'
+gem 'puma', '~> 6.4'
 
 gem 'jbuilder', '~> 2.7'
 

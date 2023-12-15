@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class ApiController < ActionController::API
-  respond_to :json
-
+class ApiController < ApplicationController
   attr_accessor :current_user
 
   def authenticate_user!

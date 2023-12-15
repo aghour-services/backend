@@ -3,25 +3,18 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-gem 'rails', '~> 7.1.0'
-
+gem 'rails', '~> 7.1.2'
 gem 'pg', '~> 1.1'
 gem 'pg_search'
-
 gem 'puma', '~> 6.4'
-
 gem 'jbuilder', '~> 2.7'
-
 gem 'bootsnap', '>= 1.4.4'
-
 gem 'activestorage-cloudinary-service'
 gem 'cloudinary'
 gem 'newrelic_rpm'
-
 gem 'devise', '~> 4.8'
 gem 'fcm'
 gem 'httparty'
-
 gem 'net-imap' # for rspec
 gem 'net-pop'  # for rspec
 gem 'net-smtp' # to send email

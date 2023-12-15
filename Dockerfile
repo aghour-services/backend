@@ -2,7 +2,7 @@ FROM ruby:3.2.2-bullseye
 
 RUN apt update --fix-missing
 
-RUN apt install -y build-essential libpq-dev libjpeg-dev libpng-dev imagemagick nano yarn git-core curl openssl libssl-dev
+RUN apt install -y build-essential libpq-dev libjpeg-dev libpng-dev imagemagick nano yarn git-core curl openssl libssl-dev nodejs
 
 RUN rm -rf /var/lib/apt/lists/*
 

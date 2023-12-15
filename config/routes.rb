@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  mount Avo::Engine, at: Avo.configuration.root_path
+
+  get '/', to: redirect('/aghour/resources/articles')
+
   defaults format: :json do
     namespace :api do
       resources :devices, only: %I[create]

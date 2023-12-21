@@ -24,3 +24,6 @@ cloudinary_production:
   tags:
     - production
   <<: *cloudinary_defaults
+
+cloudinary:
+  service: Cloudinary

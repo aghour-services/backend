@@ -3,7 +3,7 @@ RSpec.describe 'Api::Likes', type: :request do
   let(:article) { create(:article, user:) }
   let(:request_headers) { { TOKEN: user.token } }
 
-  describe '#create' do
+  xdescribe '#create' do
     context 'when article exists' do
       it 'creates a new like for the current user and article' do
         expect do

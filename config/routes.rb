@@ -1,15 +1,9 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  defaults format: :html do
-    resources :users
-    resources :devices, only: %I[index]
-    resources :firms, only: %I[index create update]
-    resources :articles
-    resources :categories do
-      resources :firms
-    end
-  end
+  mount Avo::Engine, at: Avo.configuration.root_path
+
+  get '/', to: redirect('/aghour/resources/articles')
 
   defaults format: :json do
     namespace :api do
@@ -20,14 +14,13 @@ Rails.application.routes.draw do
         get '/users/:id' => 'users#show'
         put '/users' => 'users#update'
       end
-
-      get '/articles/draft' => 'articles#draft'
       resources :articles, only: %I[index create show update destroy] do
         resources :comments, only: %I[index create update destroy]
         resource :likes, only: %I[create] do
           get :index
           delete :unlike
         end
+        collection { get :draft }
       end
       resources :search, only: %I[index]
       resources :firms

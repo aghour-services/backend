@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Category < ApplicationRecord
-  has_one_attached :icon
+  has_one_attached :icon, dependent: :destroy
   validates :name, presence: true
   validates :icon, presence: true
 

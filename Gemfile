@@ -3,6 +3,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
+gem 'activestorage'
 gem 'activestorage-cloudinary-service'
 gem 'avo', source: 'https://packager.dev/avo-hq/'
 gem 'bootsnap', '>= 1.4.4'
@@ -12,6 +13,7 @@ gem 'dartsass-rails', '~> 0.4.0'
 gem 'devise', '~> 4.8'
 gem 'fcm'
 gem 'httparty'
+gem 'image_processing'
 gem 'importmap-rails'
 gem 'jbuilder', '~> 2.7'
 gem 'jquery-rails'

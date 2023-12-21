@@ -13,7 +13,7 @@ class Avo::Resources::User < Avo::BaseResource
       end
       field :name, as: :text
       field :mobile, as: :text
-      field :email, as: :text
+      field :email, as: :text, protocol: :mailto
       field :token, as: :text, hide_on: :all
       field :role, as: :select, enum: ::User.roles, hide_on: %i[index show]
 

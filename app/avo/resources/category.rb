@@ -1,8 +1,19 @@
 class Avo::Resources::Category < Avo::BaseResource
-  self.includes = []
+  self.default_view_type = :grid
+  self.includes = [:firms]
   # self.search = {
   #   query: -> { query.ransack(id_eq: params[:q], m: "or").result(distinct: false) }
   # }
+
+  self.grid_view = {
+    card: lambda {
+      {
+        cover_url: record&.icon_path,
+        title: record&.name,
+        body: "#{record&.firms&.count} firms"
+      }
+    }
+  }
 
   def fields
     field :id, as: :id

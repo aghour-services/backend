@@ -5,17 +5,27 @@ class Avo::Resources::Firm < Avo::BaseResource
   # }
 
   def fields
-    field :id, as: :id
-    field :name, as: :text
-    field :description, as: :textarea
-    field :address, as: :text
-    field :phone_number, as: :text
-    field :email, as: :text
-    field :fb_page, as: :text
-    field :category_id, as: :number
-    field :status, as: :select, enum: ::Firm.statuses
-    field :user_id, as: :number
-    field :tags, as: :text
+    main_panel do
+      field :id, as: :id
+      field :name, as: :text
+      field :description, as: :textarea
+      field :address, as: :text
+      field :phone_number, as: :text
+      field :status, as: :select, enum: ::Firm.statuses, hide_on: %i[index show]
+      field :status, as: :badge, enum: ::Firm.statuses, only_on: %i[index show],
+                    options: {
+                      success: :published,
+                      warning: :draft
+                    }, sortable: true
+
+      field :category, as: :text do
+        record&.category&.name
+      end
+      field :user, as: :text do
+        record&.user&.name
+      end
+    end
+
     field :category, as: :belongs_to
     field :user, as: :belongs_to
   end

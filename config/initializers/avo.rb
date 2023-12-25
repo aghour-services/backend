@@ -2,7 +2,9 @@
 # The values disaplayed here are the default ones. Uncomment and change them to fit your needs.
 Avo.configure do |config|
   ## == Routing ==
-  config.root_path = '/aghour'
+  config.root_path = '/admin'
+  config.id_links_to_resource = true
+
   # used only when you have custom `map` configuration in your config.ru
   # config.prefix_path = "/internal"
 

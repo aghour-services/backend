@@ -1,8 +1,15 @@
 class Avo::Resources::Firm < Avo::BaseResource
-  self.includes = []
-  # self.search = {
-  #   query: -> { query.ransack(id_eq: params[:q], m: "or").result(distinct: false) }
-  # }
+  self.includes = %i[category user]
+  self.search = {
+    query: lambda {
+             query.ransack(id_eq: params[:q], name_cont: params[:q], m: 'or').result(distinct: false)
+           },
+    item: lambda {
+      {
+        title: record.name
+      }
+    }
+  }
 
   def fields
     main_panel do
@@ -17,15 +24,7 @@ class Avo::Resources::Firm < Avo::BaseResource
                       success: :published,
                       warning: :draft
                     }, sortable: true
-
-      field :category, as: :text do
-        record&.category&.name
-      end
-      field :user, as: :text do
-        record&.user&.name
-      end
     end
-
     field :category, as: :belongs_to
     field :user, as: :belongs_to
   end

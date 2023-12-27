@@ -15,4 +15,12 @@ class Firm < ApplicationRecord
 
   pg_search_scope :search_by_tags, against: %i[tags],
                                    using: { tsearch: { any_word: true, prefix: true } }
+
+  def self.ransackable_attributes(_auth_object = nil)
+    authorizable_ransackable_attributes
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    authorizable_ransackable_associations
+  end
 end

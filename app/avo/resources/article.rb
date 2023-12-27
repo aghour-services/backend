@@ -18,7 +18,7 @@ class Avo::Resources::Article < Avo::BaseResource
       {
         cover_url: record&.attachments&.last&.resource_url,
         title: record&.description,
-        body: record&.user&.name
+        body: record&.status
       }
     }
   }

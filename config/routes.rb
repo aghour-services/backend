@@ -3,7 +3,7 @@
 Rails.application.routes.draw do
   mount Avo::Engine, at: Avo.configuration.root_path
 
-  get '/', to: redirect('/aghour/resources/articles')
+  get '/', to: redirect('/admin/resources/articles')
 
   defaults format: :json do
     namespace :api do

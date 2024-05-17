@@ -5,7 +5,6 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 gem 'activestorage'
 gem 'activestorage-cloudinary-service'
-gem 'avo', source: 'https://packager.dev/avo-hq/'
 gem 'bootsnap', '>= 1.4.4'
 gem 'bootstrap', '~> 5.3.1'
 gem 'cloudinary'
@@ -30,6 +29,7 @@ gem 'redis', '~> 4.2.5'
 gem 'sassc-rails', '~> 2.1.2'
 gem 'sprockets-rails'
 gem 'webrick'
+gem "avo"
 
 group :development, :test do
   gem 'byebug', platforms: %I[mri mingw x64_mingw]

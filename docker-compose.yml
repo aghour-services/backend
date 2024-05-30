@@ -15,7 +15,7 @@ services:
 
   backend: 
     build: .
-    entrypoint: /app/entrypoint.sh
+    entrypoint: script/entrypoint.sh
     ports:
       - "8090:3000"
     volumes:

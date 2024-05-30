@@ -5,6 +5,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 gem 'activestorage'
 gem 'activestorage-cloudinary-service'
+gem 'avo', '>= 3.2.1'
 gem 'bootsnap', '>= 1.4.4'
 gem 'bootstrap', '~> 5.3.1'
 gem 'cloudinary'
@@ -28,8 +29,8 @@ gem 'ransack'
 gem 'redis', '~> 4.2.5'
 gem 'sassc-rails', '~> 2.1.2'
 gem 'sprockets-rails'
+gem 'tzinfo-data', platforms: %I[mingw mswin x64_mingw jruby]
 gem 'webrick'
-gem "avo"
 
 group :development, :test do
   gem 'byebug', platforms: %I[mri mingw x64_mingw]
@@ -54,4 +55,3 @@ group :test do
   gem 'database_cleaner-active_record'
   gem 'simplecov', require: false
 end
-gem 'tzinfo-data', platforms: %I[mingw mswin x64_mingw jruby]

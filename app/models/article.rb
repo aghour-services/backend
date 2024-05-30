@@ -38,10 +38,10 @@ class Article < ApplicationRecord
   def notification_payload
     {
       'title' => "#{user.name} أضاف خبر جديد",
-      'body' => self.description.first(500),
-      'article_id' => self.id,
-      'article_image' => self.attachments&.first&.resource_url,
-      'user_avatar' => self.user&.avatar&.url || DEFAULT_USER_ICON
+      'body' => description.first(500),
+      'article_id' => id,
+      'article_image' => attachments&.first&.resource_url,
+      'user_avatar' => user&.avatar&.url || DEFAULT_USER_ICON
     }
   end
 

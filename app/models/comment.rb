@@ -2,12 +2,12 @@ require 'action_view'
 require 'action_view/helpers'
 class Comment < ApplicationRecord
   include ActionView::Helpers::DateHelper
+  include NotificationHelper
 
   belongs_to :user
   belongs_to :article
   
   has_many :notifications, as: :notifiable, dependent: :destroy
-
   after_create :send_notification, :create_notification_record
 
   def time_ago
@@ -15,31 +15,12 @@ class Comment < ApplicationRecord
   end
 
   def send_notification
-    NotificationService.new(notification_payload).send_to_custom(interested_tokens)
-  end
-
-  def interested_tokens
-    tokens = []
-
-    user_comment_owner = user&.devices&.last&.token
-
-    # get article owner
-    article_owner = article&.user&.devices&.last&.token
-    
-    # # get all users who commented on this article 
-    users = article&.comments&.map(&:user)&.uniq
-    devices = users&.map(&:devices)&.flatten
-    commented_users_tokens = devices&.map(&:token)
-
-    # # get all users who liked this article
-    users = article&.likes&.map(&:user)&.uniq
-    devices = users&.map(&:devices)&.flatten
-    liked_users_tokens = devices&.map(&:token)
-
-    tokens << article_owner << commented_users_tokens << liked_users_tokens
-    tokens.flatten.reject { |token| token == user_comment_owner }.compact.uniq
+    sender = Notifications::Sender.new(notification_payload)
+    sender.send_to_specific_users(interested_tokens)
   end
  
+  private
+
   def notification_payload
     {
       'title' => "علًّقَ #{user.name} على خبر #{article.user.name}",

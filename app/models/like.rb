@@ -19,11 +19,11 @@ class Like < ApplicationRecord
     {
       'title' => "أعجب #{user.name} بخبر #{article.user.name}",
       'body' => '',
-      'like_id' => id
+      'like_id' => id,
       'article_id' => article_id,
       'user_id' => user_id,
       'article_image' => article&.attachments&.first&.resource_url,
-      'user_avatar' => user&.avatar&.url || DEFAULT_USER_ICON,
+      'user_avatar' => user&.avatar&.url || DEFAULT_USER_ICON
     }
   end
 end

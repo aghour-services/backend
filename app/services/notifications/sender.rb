@@ -43,10 +43,6 @@ module Notifications
       FCM.new(nil, credential_file_path, project_id)
     end
 
-    def fcm_service
-      Notifications::FcmService.new(client_id)
-    end
-
     def build_topic_message(topic)
       Notifications::MessageParams.build_topic_message(topic, data)
     end

@@ -16,7 +16,7 @@ module Notifications
 
     def send_to_specific_user(recipient_id)
       return unless Rails.env.production?
-  
+
       tokens = registration_ids(recipient_id)
       return if tokens.blank?
 
@@ -37,7 +37,10 @@ module Notifications
     private
 
     def fcm
-      FCM.new(nil, 'aghour-app-firebase.json','aghour-app')
+      credential_file_path = 'firebase.json'
+      project_id = 'aghour-app'
+
+      FCM.new(nil, credential_file_path, project_id)
     end
 
     def fcm_service

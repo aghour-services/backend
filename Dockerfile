@@ -15,4 +15,4 @@ RUN bundle config build.nokogiri --use-system-libraries
 
 RUN bundle install -j8
 
-CMD 'bash'
+CMD ['sh' 'bin/server']

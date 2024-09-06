@@ -17,6 +17,6 @@ RUN bundle config build.nokogiri --use-system-libraries
 
 FROM builder AS server
 ENV image_name=aghour-backend
-EXPOSE 4040
+EXPOSE 8090
 
 CMD ["sh", "bin/server"]

@@ -2,7 +2,7 @@ services:
   db:
     image: postgres:13.1
     env_file:
-      - environment.env
+      - .env
     restart: always
     healthcheck:
       test: "exit 0"

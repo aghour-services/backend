@@ -19,7 +19,6 @@ build-server:
 	docker build \
 	--label "git_commit=$(GIT_COMMIT)" \
 	--tag $(SERVER_IMAGE) \
-	--target server \
 	--file Dockerfile .
 
 tagging:

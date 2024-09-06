@@ -1,4 +1,4 @@
-FROM ruby:3.2.2-bullseye
+FROM ruby:3.3.1 AS builder
 
 RUN apt update --fix-missing
 
@@ -8,11 +8,13 @@ RUN rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /app
 ENV APP_PATH /app/
-WORKDIR $APP_PATH
-ADD . $APP_PATH
-
 RUN bundle config build.nokogiri --use-system-libraries
-
 RUN bundle install -j8
+
+FROM builder AS server
+ENV image_name=aghour-backend
+ADD . $APP_PATH
+WORKDIR $APP_PATH
+EXPOSE 4040
 
 CMD ['sh' 'bin/server']

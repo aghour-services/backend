@@ -19,4 +19,4 @@ FROM builder AS server
 ENV image_name=aghour-backend
 EXPOSE 4040
 
-CMD ['sh' 'bin/server']
+CMD ["sh", "bin/server"]

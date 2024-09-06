@@ -8,13 +8,13 @@ RUN rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /app
 ENV APP_PATH /app/
-RUN bundle config build.nokogiri --use-system-libraries
+ADD . $APP_PATH
+WORKDIR $APP_PATH
 RUN bundle install -j8
+RUN bundle config build.nokogiri --use-system-libraries
 
 FROM builder AS server
 ENV image_name=aghour-backend
-ADD . $APP_PATH
-WORKDIR $APP_PATH
 EXPOSE 4040
 
 CMD ['sh' 'bin/server']

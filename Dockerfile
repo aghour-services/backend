@@ -9,7 +9,7 @@ RUN rm -rf /var/lib/apt/lists/* \
     && apt-get install -y nodejs
 
 RUN mkdir -p /app
-ENV APP_PATH /app/
+ENV APP_PATH=/app/
 ADD . $APP_PATH
 WORKDIR $APP_PATH
 RUN bundle install -j8

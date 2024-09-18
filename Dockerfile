@@ -8,14 +8,14 @@ RUN rm -rf /var/lib/apt/lists/* \
     && apt update -qq \
     && apt-get install -y nodejs
 
+FROM builder AS server
+
 RUN mkdir -p /app
 ENV APP_PATH=/app/
 ADD . $APP_PATH
 WORKDIR $APP_PATH
 RUN bundle install -j8
 RUN bundle config build.nokogiri --use-system-libraries
-
-FROM builder AS server
 ENV image_name=aghour-backend
 EXPOSE 3000
 
